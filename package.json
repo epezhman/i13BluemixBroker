@@ -1,0 +1,11 @@
+{
+  "name": "i13-serverless-broker",
+  "version": "0.1.0",
+  "description": "I13 IBM Bluemix Serverless Broker",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
