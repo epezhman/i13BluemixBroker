@@ -20,9 +20,21 @@ function install() {
 
   echo "Creating Actions"
 
-  wsk action create publish actions/publish.js
-  wsk action create subscribe actions/subscribe.js
-  wsk action create unsubscribe actions/unsubscribe.js
+  wsk action create publish actions/publish.js \
+    --param CLOUDANT_USERNAME "$CLOUDANT_USERNAME" \
+    --param CLOUDANT_PASSWORD "$CLOUDANT_PASSWORD"
+
+  wsk action create last_read actions/last-read-subscriber.js \
+    --param CLOUDANT_USERNAME "$CLOUDANT_USERNAME" \
+    --param CLOUDANT_PASSWORD "$CLOUDANT_PASSWORD"
+
+  wsk action create subscribe actions/subscribe.js \
+    --param CLOUDANT_USERNAME "$CLOUDANT_USERNAME" \
+    --param CLOUDANT_PASSWORD "$CLOUDANT_PASSWORD"
+
+  wsk action create unsubscribe actions/unsubscribe.js \
+    --param CLOUDANT_USERNAME "$CLOUDANT_USERNAME" \
+    --param CLOUDANT_PASSWORD "$CLOUDANT_PASSWORD"
 
   echo -e "${GREEN}Install Complete${NC}"
 }
@@ -32,9 +44,21 @@ function updateActions() {
 
  echo "Updating Actions"
 
-  wsk action update publish actions/publish.js
-  wsk action update subscribe actions/subscribe.js
-  wsk action update unsubscribe actions/unsubscribe.js
+  wsk action update publish actions/publish.js \
+    --param CLOUDANT_USERNAME "$CLOUDANT_USERNAME" \
+    --param CLOUDANT_PASSWORD "$CLOUDANT_PASSWORD"
+
+  wsk action update last_read actions/last-read-subscriber.js \
+    --param CLOUDANT_USERNAME "$CLOUDANT_USERNAME" \
+    --param CLOUDANT_PASSWORD "$CLOUDANT_PASSWORD"
+
+  wsk action update subscribe actions/subscribe.js \
+    --param CLOUDANT_USERNAME "$CLOUDANT_USERNAME" \
+    --param CLOUDANT_PASSWORD "$CLOUDANT_PASSWORD"
+
+  wsk action update unsubscribe actions/unsubscribe.js \
+    --param CLOUDANT_USERNAME "$CLOUDANT_USERNAME" \
+    --param CLOUDANT_PASSWORD "$CLOUDANT_PASSWORD"
 
   echo -e "${GREEN}Update Complete${NC}"
 }
@@ -45,6 +69,7 @@ function uninstall() {
  echo "Removing Actions"
 
   wsk action delete publish
+  wsk action delete last_read
   wsk action delete subscribe
   wsk action delete unsubscribe
 
@@ -52,11 +77,18 @@ function uninstall() {
 }
 
 function showEnv() {
-  echo -e "${YELLOW}"
+  echo -e "${YELLOW}Env Values"
+
+  echo CLOUDANT_INSTANCE=$CLOUDANT_INSTANCE
+  echo CLOUDANT_USERNAME=$CLOUDANT_USERNAME
+  echo CLOUDANT_PASSWORD=$CLOUDANT_PASSWORD
+
+  echo CLOUDANT_SUBSCRIBERS_DATABASE=$CLOUDANT_SUBSCRIBERS_DATABASE
+  echo CLOUDANT_SUBSCRIBER_LOGS_DATABASE=$CLOUDANT_SUBSCRIBER_LOGS_DATABASE
+  echo CLOUDANT_PUBLISHED_MESSAGES_DATABASE=$CLOUDANT_PUBLISHED_MESSAGES_DATABASE
 
   echo -e "${NC}"
 }
-
 
 
 case "$1" in
