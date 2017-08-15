@@ -18,101 +18,89 @@ function install() {
 
   echo -e "${YELLOW}Installing OpenWhisk actions, triggers, and rules for check-deposit..."
 
-  echo "Binding Cloudant package with credential parameters"
+  echo "Logging in to Bluemix"
+  wsk bluemix login --user $OPENWHISK_USER_NAME \
+  --password $OPENWHISK_PASSWORD \
+  --namespace $OPENWHISK_NAMESPACE
 
+  echo "Creating PubSub package"
+  wsk package create pubsub \
+    --param "CLOUDANT_USERNAME" $CLOUDANT_USERNAME \
+    --param "CLOUDANT_PASSWORD" $CLOUDANT_PASSWORD
+
+  echo "Binding Cloudant package with credential parameters"
   wsk package bind /whisk.system/cloudant "$CLOUDANT_INSTANCE" \
   --param username "$CLOUDANT_USERNAME" \
   --param password "$CLOUDANT_PASSWORD" \
   --param host "$CLOUDANT_USERNAME.cloudant.com"
 
   echo "Creating trigger to fire events when messages are published"
-
   wsk trigger create message-published \
     --feed "/_/$CLOUDANT_INSTANCE/changes" \
     --param dbname "$CLOUDANT_PUBLISHED_MESSAGES_DATABASE"
 
   echo "Creating Actions"
-
-  wsk action create publish actions/publish.js \
-    --param CLOUDANT_USERNAME "$CLOUDANT_USERNAME" \
-    --param CLOUDANT_PASSWORD "$CLOUDANT_PASSWORD"
-
-  wsk action create last_read actions/last-read-subscriber.js \
-    --param CLOUDANT_USERNAME "$CLOUDANT_USERNAME" \
-    --param CLOUDANT_PASSWORD "$CLOUDANT_PASSWORD"
-
-  wsk action create subscribe actions/subscribe.js \
-    --param CLOUDANT_USERNAME "$CLOUDANT_USERNAME" \
-    --param CLOUDANT_PASSWORD "$CLOUDANT_PASSWORD"
-
-  wsk action create unsubscribe actions/unsubscribe.js \
-    --param CLOUDANT_USERNAME "$CLOUDANT_USERNAME" \
-    --param CLOUDANT_PASSWORD "$CLOUDANT_PASSWORD"
-
-  wsk action create broker actions/broker.js \
-    --param CLOUDANT_USERNAME "$CLOUDANT_USERNAME" \
-    --param CLOUDANT_PASSWORD "$CLOUDANT_PASSWORD"
+  wsk action create pubsub/publish actions/publish.js --web true
+  wsk action create pubsub/last_read actions/last-read-subscriber.js
+  wsk action create pubsub/subscribe actions/subscribe.js --web true
+  wsk action create pubsub/unsubscribe actions/unsubscribe.js --web true
+  wsk action create pubsub/broker actions/broker.js
 
   echo "Creating sequence that ties published message read to broker action"
-  wsk action create broker-sequence \
-    --sequence /_/$CLOUDANT_INSTANCE/read,broker
+  wsk action create pubsub/broker-sequence \
+    --sequence /_/$CLOUDANT_INSTANCE/read,pubsub/broker
 
   echo "Creating rule that maps published messages change trigger to broker sequence"
-  wsk rule create broker-rule message-published broker-sequence
+  wsk rule create broker-rule message-published pubsub/broker-sequence
+
+  echo "Creating API"
+  wsk api create -n "Publish" /pubsub /publish post pubsub/publish --response-type json
+  wsk api create -n "Subscribe" /pubsub /subscribe post pubsub/subscribe --response-type json
+  wsk api create -n "Unsubscribe" /pubsub /unsubscribe post pubsub/unsubscribe --response-type json
 
   echo -e "${GREEN}Install Complete${NC}"
 }
 
 function updateActions() {
- echo -e "${YELLOW}Updating..."
+  echo -e "${YELLOW}Updating..."
 
- echo "Updating Actions"
-
-  wsk action update publish actions/publish.js \
-    --param CLOUDANT_USERNAME "$CLOUDANT_USERNAME" \
-    --param CLOUDANT_PASSWORD "$CLOUDANT_PASSWORD"
-
-  wsk action update last_read actions/last-read-subscriber.js \
-    --param CLOUDANT_USERNAME "$CLOUDANT_USERNAME" \
-    --param CLOUDANT_PASSWORD "$CLOUDANT_PASSWORD"
-
-  wsk action update subscribe actions/subscribe.js \
-    --param CLOUDANT_USERNAME "$CLOUDANT_USERNAME" \
-    --param CLOUDANT_PASSWORD "$CLOUDANT_PASSWORD"
-
-  wsk action update unsubscribe actions/unsubscribe.js \
-    --param CLOUDANT_USERNAME "$CLOUDANT_USERNAME" \
-    --param CLOUDANT_PASSWORD "$CLOUDANT_PASSWORD"
-
-  wsk action update broker actions/broker.js \
-    --param CLOUDANT_USERNAME "$CLOUDANT_USERNAME" \
-    --param CLOUDANT_PASSWORD "$CLOUDANT_PASSWORD"
+  echo "Updating Actions"
+  wsk action update pubsub/publish actions/publish.js
+  wsk action update pubsub/last_read actions/last-read-subscriber.js
+  wsk action update pubsub/subscribe actions/subscribe.js
+  wsk action update pubsub/unsubscribe actions/unsubscribe.js
+  wsk action update pubsub/broker actions/broker.js
 
   echo -e "${GREEN}Update Complete${NC}"
 }
 
 function uninstall() {
- echo -e "${RED}Uninstalling..."
+  echo -e "${RED}Uninstalling..."
 
- echo "Removing rules..."
+  echo "Removing rules..."
   wsk rule disable broker-rule
   sleep 1
   wsk rule delete broker-rule
 
- echo "Removing triggers..."
- wsk trigger delete message-published
+  echo "Removing triggers..."
+  wsk trigger delete message-published
 
- echo "Removing Actions"
-
-  wsk action delete publish
-  wsk action delete last_read
-  wsk action delete subscribe
-  wsk action delete unsubscribe
-  wsk action delete broker
-  wsk action delete broker-sequence
+  echo "Removing Actions"
+  wsk action delete pubsub/publish
+  wsk action delete pubsub/last_read
+  wsk action delete pubsub/subscribe
+  wsk action delete pubsub/unsubscribe
+  wsk action delete pubsub/broker
+  wsk action delete pubsub/broker-sequence
 
   echo "Removing packages..."
   wsk package delete "$CLOUDANT_INSTANCE"
+
+  echo "Deleting API"
+  wsk api delete /pubsub
+
+  echo "Removing package..."
+  wsk package delete pubsub
 
   echo -e "${GREEN}Uninstall Complete${NC}"
 }
@@ -128,9 +116,12 @@ function showEnv() {
   echo CLOUDANT_SUBSCRIBER_LOGS_DATABASE=$CLOUDANT_SUBSCRIBER_LOGS_DATABASE
   echo CLOUDANT_PUBLISHED_MESSAGES_DATABASE=$CLOUDANT_PUBLISHED_MESSAGES_DATABASE
 
+  echo OPENWHISK_USER_NAME=$OPENWHISK_USER_NAME
+  echo OPENWHISK_PASSWORD=$OPENWHISK_PASSWORD
+  echo OPENWHISK_NAMESPACE=$OPENWHISK_NAMESPACE
+
   echo -e "${NC}"
 }
-
 
 case "$1" in
 "--install" )
@@ -149,3 +140,5 @@ showEnv
 usage
 ;;
 esac
+
+# wsk api list -f
