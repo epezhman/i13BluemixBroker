@@ -16,9 +16,9 @@ function main(params) {
                 account: params.CLOUDANT_USERNAME,
                 password: params.CLOUDANT_PASSWORD
             });
-            const subscribers = cloudant.db.use('subscribers');
+            const subscribed_topics = cloudant.db.use('subscribed_topics');
 
-            subscribers.find({
+            subscribed_topics.find({
                 "selector": {
                     "subscriber": params.subscriber_id
                 },

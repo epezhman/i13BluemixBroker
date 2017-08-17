@@ -22,15 +22,15 @@ function main(params) {
                 password: params.CLOUDANT_PASSWORD
             });
 
-            const subscribers = cloudant.db.use('subscribers');
+            const subscribed_topics = cloudant.db.use('subscribed_topics');
 
             each(params.topics.split(','), (topic, mcb) => {
                 topic = topic.trim();
                 if (topic.length) {
                     let sub_id = `${topic}-${params.subscriber_id}`;
-                    subscribers.get(sub_id, (err, data) => {
+                    subscribed_topics.get(sub_id, (err, data) => {
                         if (err) {
-                            subscribers.insert({
+                            subscribed_topics.insert({
                                 _id: sub_id,
                                 topic: topic,
                                 subscriber: params.subscriber_id,

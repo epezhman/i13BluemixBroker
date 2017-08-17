@@ -47,6 +47,7 @@ function install() {
   wsk action create pubsub/broker actions/broker.js
   wsk action create pubsub/get_sub_topics actions/get-subscribed-topics.js --web true
   wsk action create pubsub/get_sub_messages actions/get-subscribed-messages.js --web true
+  wsk action create pubsub/register_subscriber actions/register-subscriber.js --web true
 
   echo "Creating sequence that ties published message read to broker action"
   wsk action create pubsub/broker-sequence \
@@ -61,6 +62,7 @@ function install() {
   wsk api create -n "Unsubscribe" /pubsub /unsubscribe post pubsub/unsubscribe --response-type json
   wsk api create -n "GetSubscribedTopics" /pubsub /get_subscribed_topics get pubsub/get_sub_topics --response-type json
   wsk api create -n "GetSubscribedMessages" /pubsub /get_subscribed_messages get pubsub/get_sub_messages --response-type json
+  wsk api create -n "RegisterSubscriber" /pubsub /register_subscriber get pubsub/register_subscriber --response-type json
 
   echo -e "${GREEN}Install Complete${NC}"
 }
@@ -84,6 +86,7 @@ function uninstall() {
   wsk action delete pubsub/broker
   wsk action delete pubsub/get_sub_topics
   wsk action delete pubsub/get_sub_messages
+  wsk action delete pubsub/register_subscriber
 
   echo "Removing Sequences"
   wsk action delete pubsub/broker-sequence
