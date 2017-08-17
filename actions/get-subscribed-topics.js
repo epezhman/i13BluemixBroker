@@ -1,6 +1,4 @@
 const Cloudant = require('cloudant');
-const each = require('async/each');
-
 
 /**
  * 1.   Get subscribed topics of an app
@@ -34,12 +32,20 @@ function main(params) {
                 ]
             }, (err, result) => {
                 if (!err) {
-                    resolve(result);
+                    console.log('[get-subscribed-topics.main] success: got the subscribed topics');
+                    let topics = [];
+                    if (result.docs) {
+                        result.docs.forEach((topic) => {
+                            topics.push(topic.topic)
+                        });
+                    }
+                    return resolve({topics: topics});
                 }
                 else {
+                    console.log('[get-subscribed-topics.main] error: Error in getting the subscribed topics');
                     console.log(err);
-                    reject({
-                        result: 'Error in query the subscription'
+                    return reject({
+                        result: 'Error in query the subscribed topics'
                     });
                 }
             });
