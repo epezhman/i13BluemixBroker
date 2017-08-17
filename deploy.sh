@@ -9,7 +9,7 @@ NC='\033[0m'
 source local.env
 
 function usage() {
-  echo -e "${YELLOW}Usage: $0 [--install,--uninstall,--update,--env]${NC}"
+  echo -e "${YELLOW}Usage: $0 [--install,--uninstall,--reinstall,--env]${NC}"
 }
 
 function install() {
@@ -45,6 +45,7 @@ function install() {
   wsk action create pubsub/subscribe actions/subscribe.js --web true
   wsk action create pubsub/unsubscribe actions/unsubscribe.js --web true
   wsk action create pubsub/broker actions/broker.js
+  wsk action create pubsub/get_sub_topics actions/get-subscribed-topics.js --web true
 
   echo "Creating sequence that ties published message read to broker action"
   wsk action create pubsub/broker-sequence \
@@ -59,19 +60,6 @@ function install() {
   wsk api create -n "Unsubscribe" /pubsub /unsubscribe post pubsub/unsubscribe --response-type json
 
   echo -e "${GREEN}Install Complete${NC}"
-}
-
-function updateActions() {
-  echo -e "${YELLOW}Updating..."
-
-  echo "Updating Actions"
-  wsk action update pubsub/publish actions/publish.js
-  wsk action update pubsub/last_read actions/last-read-subscriber.js
-  wsk action update pubsub/subscribe actions/subscribe.js
-  wsk action update pubsub/unsubscribe actions/unsubscribe.js
-  wsk action update pubsub/broker actions/broker.js
-
-  echo -e "${GREEN}Update Complete${NC}"
 }
 
 function uninstall() {
@@ -91,6 +79,9 @@ function uninstall() {
   wsk action delete pubsub/subscribe
   wsk action delete pubsub/unsubscribe
   wsk action delete pubsub/broker
+  wsk action delete pubsub/get_sub_topics
+
+  echo "Removing Sequences"
   wsk action delete pubsub/broker-sequence
 
   echo "Removing packages..."
@@ -103,6 +94,11 @@ function uninstall() {
   wsk package delete pubsub
 
   echo -e "${GREEN}Uninstall Complete${NC}"
+}
+
+function reinstall() {
+    uninstall
+    install
 }
 
 function showEnv() {
@@ -127,11 +123,11 @@ case "$1" in
 "--install" )
 install
 ;;
-"--update" )
-updateActions
-;;
 "--uninstall" )
 uninstall
+;;
+"--reinstall" )
+reinstall
 ;;
 "--env" )
 showEnv

@@ -25,7 +25,7 @@ function main(params) {
                 topic = topic.trim();
                 if (topic.length) {
                     messages.insert({
-                        topics: topic,
+                        topic: topic,
                         message: params.message,
                         time: new Date(),
                         timestamp: Date.now()
