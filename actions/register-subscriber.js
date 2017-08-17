@@ -37,13 +37,13 @@ function main(params) {
                     else {
                         console.log('[register-subscriber.main] success: success registering subscriber');
                         resolve({
-                            result: _id
+                            sub_id: _id,
+                            ok: true
                         });
                     }
                 });
             }
-            else
-            {
+            else {
                 console.log('[register-subscriber.main] error: subscriber with this ID already exist');
                 reject({
                     result: 'Subscriber with the ID exist'
