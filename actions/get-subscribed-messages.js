@@ -13,7 +13,7 @@ const parallel = require('async/parallel');
  */
 
 function main(params) {
-    if (params.subscriber_id) {
+    if (params.hasOwnProperty('subscriber_id')) {
         return new Promise((resolve, reject) => {
             const cloudant = new Cloudant({
                 account: params.CLOUDANT_USERNAME,

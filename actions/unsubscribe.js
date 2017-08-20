@@ -13,7 +13,7 @@ const each = require('async/each');
  */
 
 function main(params) {
-    if (params.topics && params.subscriber_id) {
+    if (params.hasOwnProperty('topics') && params.hasOwnProperty('subscriber_id')) {
 
         return new Promise((resolve, reject) => {
 

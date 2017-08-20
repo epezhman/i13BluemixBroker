@@ -12,7 +12,7 @@ const each = require('async/each');
  */
 
 function main(params) {
-    if (params.topics && params.message) {
+    if (params.hasOwnProperty('topics') && params.hasOwnProperty('message')) {
         return new Promise((resolve, reject) => {
             const cloudant = new Cloudant({
                 account: params.CLOUDANT_USERNAME,
