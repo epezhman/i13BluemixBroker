@@ -44,10 +44,15 @@ function install() {
   wsk action create pubsub/last_read actions/last-read-subscriber.js
   wsk action create pubsub/subscribe actions/subscribe.js --web true
   wsk action create pubsub/unsubscribe actions/unsubscribe.js --web true
-  wsk action create pubsub/broker actions/broker.js
   wsk action create pubsub/get_sub_topics actions/get-subscribed-topics.js --web true
   wsk action create pubsub/get_sub_messages actions/get-subscribed-messages.js --web true
   wsk action create pubsub/register_subscriber actions/register-subscriber.js --web true
+
+  wsk action create pubsub/broker actions/broker.js \
+  --param "WATSON_IOT_ORG" $WATSON_IOT_ORG \
+  --param "WATSON_IOT_APPLICATION_TYPE" $WATSON_IOT_APPLICATION_TYPE \
+  --param "WATSON_IOT_API_USERNAME" $WATSON_IOT_API_USERNAME \
+  --param "WATSON_IOT_API_PASSWORD" $WATSON_IOT_API_PASSWORD
 
   echo "Creating sequence that ties published message read to broker action"
   wsk action create pubsub/broker-sequence \
@@ -122,6 +127,11 @@ function showEnv() {
   echo OPENWHISK_USER_NAME=$OPENWHISK_USER_NAME
   echo OPENWHISK_PASSWORD=$OPENWHISK_PASSWORD
   echo OPENWHISK_NAMESPACE=$OPENWHISK_NAMESPACE
+
+  echo WATSON_IOT_ORG=$WATSON_IOT_ORG
+  echo WATSON_IOT_APPLICATION_TYPE=$WATSON_IOT_APPLICATION_TYPE
+  echo WATSON_IOT_API_USERNAME=$WATSON_IOT_API_USERNAME
+  echo WATSON_IOT_API_PASSWORD=$WATSON_IOT_API_PASSWORD
 
   echo -e "${NC}"
 }

@@ -6,7 +6,7 @@ const Cloudant = require('cloudant');
  * @param   params.subscriber_id       Subscriber ID
  * @param   params.CLOUDANT_USERNAME   Cloudant username (set once at action update time)
  * @param   params.CLOUDANT_PASSWORD   Cloudant password (set once at action update time)
- * @return                             Standard OpenWhisk success/error response
+ * @return                             Promise OpenWhisk success/error response
  */
 
 function main(params) {
@@ -18,10 +18,8 @@ function main(params) {
             });
             const sub_logs = cloudant.db.use('subscribers_logs');
             sub_logs.get(params.subscriber_id, {revs_info: true}, (err, data) => {
-
                 const time = new Date();
                 const timestamp = Date.now();
-
                 if (err) {
                     sub_logs.insert({
                         _id: params.subscriber_id,
