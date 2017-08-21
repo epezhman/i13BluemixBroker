@@ -27,25 +27,17 @@ function main(params) {
         });
         const subscribed_topics = cloudant.db.use('subscribed_topics');
 
-        subscribed_topics.find({
-            "selector": {
-                "topic": params.topic
-            },
-            "fields": [
-                "subscriber"
-            ]
-        }, (err, result) => {
+        subscribed_topics.get(params.topic, (err, result) => {
             if (!err) {
                 console.log('[get-subscribed-topics.main] success: got the subscribed topics');
-                each(result.docs, function (sub_id, callback) {
-                    let subscriber_url = `http://${params.WATSON_IOT_ORG}.messaging.internetofthings.ibmcloud.com:1883/api/v0002/application/types/${params.WATSON_IOT_APPLICATION_TYPE}/devices/${sub_id.subscriber}/commands/published_message`;
+                each(result['subscribers'], function (sub_id, callback) {
+                    let subscriber_url = `http://${params.WATSON_IOT_ORG}.messaging.internetofthings.ibmcloud.com:1883/api/v0002/application/types/${params.WATSON_IOT_APPLICATION_TYPE}/devices/${sub_id}/commands/published_message`;
                     let req_options = {
                         uri: subscriber_url,
                         method: 'POST',
                         body:{
                             message: params.message,
                             topic: params.topic,
-                            timestamp: params.timestamp,
                             time: params.time
                         },
                         auth: {
@@ -59,7 +51,7 @@ function main(params) {
                             callback()
                         })
                         .catch(function (err) {
-                            console.log(`[broker.main] error: Message could not be sent to ${sub_id.subscriber}`);
+                            console.log(`[broker.main] error: Message could not be sent to ${sub_id}`);
                             callback()
                         });
 

@@ -1,5 +1,6 @@
 const Cloudant = require('cloudant');
 const each = require('async/each');
+const array = require('lodash/array');
 
 
 /**
@@ -27,26 +28,37 @@ function main(params) {
             each(params.topics.split(','), (topic, mcb) => {
                 topic = topic.trim();
                 if (topic.length) {
-                    let sub_id = `${topic}-${params.subscriber_id}`;
-                    subscribed_topics.get(sub_id, (err, data) => {
+                    subscribed_topics.get(topic, {revs_info: true}, (err, data) => {
                         if (err) {
                             subscribed_topics.insert({
-                                _id: sub_id,
+                                _id: topic,
                                 topic: topic,
-                                subscriber: params.subscriber_id,
-                                time: new Date(),
-                                timestamp: Date.now()
+                                subscribers: [params.subscriber_id]
                             }, (err, body, head) => {
                                 if (err) {
                                     console.log(err);
                                     mcb('[last-read-subscribe.main] error: error insert subscriber first time')
                                 }
                                 else {
-                                    mcb();
+                                    addTopicToSubscriber(cloudant, topic, params.subscriber_id, mcb);
                                 }
                             });
                         }
-                        mcb();
+                        else {
+                            subscribed_topics.insert({
+                                _id: data._id,
+                                _rev: data._rev,
+                                subscribers: array.union(data.subscribers, [params.subscriber_id])
+                            }, (err, body, head) => {
+                                if (err) {
+                                    console.log(err);
+                                    mcb('[last-read-subscribe.main] error: appending subscriber first time')
+                                }
+                                else {
+                                    addTopicToSubscriber(cloudant, topic, params.subscriber_id, mcb);
+                                }
+                            });
+                        }
                     });
                 }
             }, (err) => {
@@ -67,4 +79,32 @@ function main(params) {
         });
     }
     return {message: "Either subscriber id or topics are not provided"};
+}
+
+
+function addTopicToSubscriber(cloudant, topic, subscriber_id, mcb) {
+    const subscribers = cloudant.db.use('subscribers');
+
+    subscribers.get(subscriber_id, {revs_info: true}, (err, data) => {
+        if (!err) {
+            subscribers.insert({
+                _id: data._id,
+                _rev: data._rev,
+                topics: data.hasOwnProperty('topics') ? array.union(data.topics, [topic]) : [topic],
+                time: data.time,
+                timestamp: data.timestamp
+            }, (err, body, head) => {
+                if (err) {
+                    console.log(err);
+                    mcb('[subscribe.main] error: appending topics to subscribers list')
+                }
+                else {
+                    mcb()
+                }
+            });
+        }
+        else {
+            mcb('[subscribe.main] error: subscriber does not exist')
+        }
+    });
 }

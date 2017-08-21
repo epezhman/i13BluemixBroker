@@ -16,30 +16,15 @@ function main(params) {
                 account: params.CLOUDANT_USERNAME,
                 password: params.CLOUDANT_PASSWORD
             });
-            const subscribed_topics = cloudant.db.use('subscribed_topics');
+            const subscribers = cloudant.db.use('subscribers');
 
-            subscribed_topics.find({
-                "selector": {
-                    "subscriber": params.subscriber_id
-                },
-                "fields": [
-                    "topic"
-                ],
-                "sort": [
-                    {
-                        "topic:string": "asc"
-                    }
-                ]
-            }, (err, result) => {
+            subscribers.get(params.subscriber_id, (err, result) => {
                 if (!err) {
                     console.log('[get-subscribed-topics.main] success: got the subscribed topics');
-                    let topics = [];
-                    if (result.docs) {
-                        result.docs.forEach((topic) => {
-                            topics.push(topic.topic)
-                        });
-                    }
-                    return resolve({topics: topics});
+                    if (result.hasOwnProperty('topics'))
+                        return resolve({topics: result['topics']});
+                    else
+                        return resolve({topics: []});
                 }
                 else {
                     console.log('[get-subscribed-topics.main] error: Error in getting the subscribed topics');

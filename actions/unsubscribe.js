@@ -1,5 +1,6 @@
 const Cloudant = require('cloudant');
 const each = require('async/each');
+const array = require('lodash/array');
 
 
 /**
@@ -9,7 +10,7 @@ const each = require('async/each');
  * @param   params.subscriber_id       Subscriber ID
  * @param   params.CLOUDANT_USERNAME   Cloudant username (set once at action update time)
  * @param   params.CLOUDANT_PASSWORD   Cloudant password (set once at action update time)
- * @return                             Standard OpenWhisk success/error response
+ * @return                             Promise OpenWhisk success/error response
  */
 
 function main(params) {
@@ -27,20 +28,27 @@ function main(params) {
             each(params.topics.split(','), (topic, mcb) => {
                 topic = topic.trim();
                 if (topic.length) {
-                    let sub_id = `${topic}-${params.subscriber_id}`;
-                    subscribed_topics.get(sub_id, {revs_info: true}, (err, data) => {
+                    subscribed_topics.get(topic, {revs_info: true}, (err, data) => {
                         if (!err) {
-                            subscribed_topics.destroy(sub_id, data._rev, (err, body, head) => {
+                            subscribed_topics.insert({
+                                _id: data._id,
+                                _rev: data._rev,
+                                subscribers: array.remove(data.subscribers, function (_sub_id) {
+                                    return _sub_id !== params.subscriber_id
+                                })
+                            }, (err, body, head) => {
                                 if (err) {
                                     console.log(err);
-                                    mcb('[unsubscribe.main] error: error delete subscription')
+                                    mcb('[last-read-subscribe.main] error: removing subscriber from topics list')
                                 }
                                 else {
-                                    mcb();
+                                    removeTopicToSubscriber(cloudant, topic, params.subscriber_id, mcb);
                                 }
                             });
                         }
-                        mcb();
+                        else {
+                            mcb();
+                        }
                     });
                 }
             }, (err) => {
@@ -61,4 +69,34 @@ function main(params) {
         });
     }
     return {message: "Either subscriber id or topics are not provided"};
+}
+
+
+function removeTopicToSubscriber(cloudant, topic, subscriber_id, mcb) {
+    const subscribers = cloudant.db.use('subscribers');
+
+    subscribers.get(subscriber_id, {revs_info: true}, (err, data) => {
+        if (!err) {
+            subscribers.insert({
+                _id: data._id,
+                _rev: data._rev,
+                topics: data.hasOwnProperty('topics') ? array.remove(data.topics, function (_topic) {
+                    return _topic !== topic
+                }) : [],
+                time: data.time,
+                timestamp: data.timestamp
+            }, (err, body, head) => {
+                if (err) {
+                    console.log(err);
+                    mcb('[unsubscribe.main] error: removing topics from subscribers list')
+                }
+                else {
+                    mcb()
+                }
+            });
+        }
+        else {
+            mcb('[unsubscribe.main] error: subscriber does not exist')
+        }
+    });
 }
