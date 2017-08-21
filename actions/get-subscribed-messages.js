@@ -76,7 +76,7 @@ function main(params) {
                         "fields": [
                             "topic",
                             "message",
-                            "timestamp"
+                            "time"
                         ],
                         "sort": [
                             {

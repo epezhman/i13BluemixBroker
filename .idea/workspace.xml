@@ -5,11 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="50d43a40-160d-441d-b2d6-e45ddcec0157" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/actions/broker.js" afterPath="$PROJECT_DIR$/actions/broker.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/actions/get-subscribed-topics.js" afterPath="$PROJECT_DIR$/actions/get-subscribed-topics.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/actions/subscribe.js" afterPath="$PROJECT_DIR$/actions/subscribe.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/actions/unsubscribe.js" afterPath="$PROJECT_DIR$/actions/unsubscribe.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/local.env.sample" afterPath="$PROJECT_DIR$/local.env.sample" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/actions/get-subscribed-messages.js" afterPath="$PROJECT_DIR$/actions/get-subscribed-messages.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -24,81 +21,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="broker.js" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/actions/broker.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="177">
-              <caret line="33" column="201" lean-forward="false" selection-start-line="33" selection-start-column="195" selection-end-line="33" selection-end-column="201" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="subscribe.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/actions/subscribe.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="162">
-              <caret line="30" column="47" lean-forward="false" selection-start-line="30" selection-start-column="42" selection-end-line="30" selection-end-column="47" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="unsubscribe.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/actions/unsubscribe.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="311">
-              <caret line="77" column="17" lean-forward="true" selection-start-line="77" selection-start-column="0" selection-end-line="78" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="publish.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/actions/publish.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="18">
-              <caret line="14" column="75" lean-forward="false" selection-start-line="14" selection-start-column="75" selection-end-line="14" selection-end-column="75" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="last-read-subscriber.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/actions/last-read-subscriber.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="289">
-              <caret line="29" column="101" lean-forward="false" selection-start-line="29" selection-start-column="99" selection-end-line="29" selection-end-column="101" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="get-subscribed-topics.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/actions/get-subscribed-topics.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="558">
-              <caret line="31" column="35" lean-forward="true" selection-start-line="31" selection-start-column="35" selection-end-line="31" selection-end-column="35" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="get-subscribed-messages.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="get-subscribed-messages.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/actions/get-subscribed-messages.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="289">
-              <caret line="70" column="33" lean-forward="false" selection-start-line="70" selection-start-column="29" selection-end-line="70" selection-end-column="33" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="register-subscriber.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/actions/register-subscriber.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="288">
-              <caret line="26" column="41" lean-forward="true" selection-start-line="25" selection-start-column="20" selection-end-line="26" selection-end-column="41" />
+            <state relative-caret-position="299">
+              <caret line="81" column="33" lean-forward="false" selection-start-line="81" selection-start-column="33" selection-end-line="81" selection-end-column="33" />
               <folding />
             </state>
           </provider>
@@ -129,9 +56,9 @@
       <find>33</find>
       <find>topi</find>
       <find>topics</find>
-      <find>find</find>
       <find>docs</find>
       <find>sub_id</find>
+      <find>find</find>
     </findStrings>
     <dirStrings>
       <dir>$PROJECT_DIR$/actions</dir>
@@ -154,14 +81,14 @@
         <option value="$PROJECT_DIR$/actions/publish.js" />
         <option value="$PROJECT_DIR$/actions/register-subscriber.js" />
         <option value="$PROJECT_DIR$/deploy.sh" />
-        <option value="$PROJECT_DIR$/actions/last-read-subscriber.js" />
         <option value="$PROJECT_DIR$/local.env" />
         <option value="$PROJECT_DIR$/local.env.sample" />
-        <option value="$PROJECT_DIR$/actions/get-subscribed-messages.js" />
         <option value="$PROJECT_DIR$/actions/subscribe.js" />
         <option value="$PROJECT_DIR$/actions/unsubscribe.js" />
         <option value="$PROJECT_DIR$/actions/get-subscribed-topics.js" />
         <option value="$PROJECT_DIR$/actions/broker.js" />
+        <option value="$PROJECT_DIR$/actions/last-read-subscriber.js" />
+        <option value="$PROJECT_DIR$/actions/get-subscribed-messages.js" />
       </list>
     </option>
   </component>
@@ -288,12 +215,12 @@
       <workItem from="1503216144394" duration="2723000" />
       <workItem from="1503240736047" duration="2679000" />
       <workItem from="1503312050094" duration="6454000" />
-      <workItem from="1503319577518" duration="9179000" />
+      <workItem from="1503319577518" duration="11489000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="70174000" />
+    <option name="totallyTimeSpent" value="72484000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="65" y="-4" width="1855" height="1084" extended-state="6" />
@@ -623,26 +550,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/actions/last-read-subscriber.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="29" column="101" lean-forward="false" selection-start-line="29" selection-start-column="99" selection-end-line="29" selection-end-column="101" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/actions/get-subscribed-topics.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="558">
           <caret line="31" column="35" lean-forward="true" selection-start-line="31" selection-start-column="35" selection-end-line="31" selection-end-column="35" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/actions/get-subscribed-messages.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="70" column="33" lean-forward="false" selection-start-line="70" selection-start-column="29" selection-end-line="70" selection-end-column="33" />
           <folding />
         </state>
       </provider>
@@ -659,6 +570,22 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="177">
           <caret line="33" column="201" lean-forward="false" selection-start-line="33" selection-start-column="195" selection-end-line="33" selection-end-column="201" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/actions/last-read-subscriber.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="576">
+          <caret line="59" column="111" lean-forward="true" selection-start-line="59" selection-start-column="111" selection-end-line="59" selection-end-column="111" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/actions/get-subscribed-messages.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="299">
+          <caret line="81" column="33" lean-forward="false" selection-start-line="81" selection-start-column="33" selection-end-line="81" selection-end-column="33" />
           <folding />
         </state>
       </provider>
