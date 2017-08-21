@@ -42,7 +42,7 @@ function main(params) {
                     let req_options = {
                         uri: subscriber_url,
                         method: 'POST',
-                        body: {
+                        body:{
                             message: params.message,
                             topic: params.topic,
                             timestamp: params.timestamp,
