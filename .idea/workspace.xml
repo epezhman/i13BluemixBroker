@@ -5,7 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="50d43a40-160d-441d-b2d6-e45ddcec0157" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/actions/get-subscribed-messages.js" afterPath="$PROJECT_DIR$/actions/get-subscribed-messages.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -24,8 +23,18 @@
       <file leaf-file-name="get-subscribed-messages.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/actions/get-subscribed-messages.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="299">
-              <caret line="81" column="33" lean-forward="false" selection-start-line="81" selection-start-column="33" selection-end-line="81" selection-end-column="33" />
+            <state relative-caret-position="348">
+              <caret line="66" column="46" lean-forward="false" selection-start-line="66" selection-start-column="46" selection-end-line="66" selection-end-column="46" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="last-read-subscriber.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/actions/last-read-subscriber.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="864">
+              <caret line="71" column="0" lean-forward="true" selection-start-line="11" selection-start-column="0" selection-end-line="71" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -59,7 +68,11 @@
       <find>docs</find>
       <find>sub_id</find>
       <find>find</find>
+      <find>last-read-subscribe.main</find>
     </findStrings>
+    <replaceStrings>
+      <replace>get-subscribed-messages.get-last-read</replace>
+    </replaceStrings>
     <dirStrings>
       <dir>$PROJECT_DIR$/actions</dir>
     </dirStrings>
@@ -159,6 +172,7 @@
     <property name="JavaScriptWeakerCompletionTypeGuess" value="true" />
     <property name="ToolWindowSalesforce.ShowToolbar" value="false" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
+    <property name="HbShouldOpenHtmlAsHb" value="" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -215,16 +229,15 @@
       <workItem from="1503216144394" duration="2723000" />
       <workItem from="1503240736047" duration="2679000" />
       <workItem from="1503312050094" duration="6454000" />
-      <workItem from="1503319577518" duration="11489000" />
+      <workItem from="1503319577518" duration="13124000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="72484000" />
+    <option name="totallyTimeSpent" value="74119000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="65" y="-4" width="1855" height="1084" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Debug Logs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.32984293" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -550,14 +563,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/actions/get-subscribed-topics.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="558">
-          <caret line="31" column="35" lean-forward="true" selection-start-line="31" selection-start-column="35" selection-end-line="31" selection-end-column="35" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/actions/subscribe.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="162">
@@ -574,18 +579,26 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/actions/get-subscribed-topics.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="324">
+          <caret line="18" column="40" lean-forward="true" selection-start-line="18" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/actions/last-read-subscriber.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="576">
-          <caret line="59" column="111" lean-forward="true" selection-start-line="59" selection-start-column="111" selection-end-line="59" selection-end-column="111" />
+        <state relative-caret-position="864">
+          <caret line="71" column="0" lean-forward="true" selection-start-line="11" selection-start-column="0" selection-end-line="71" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/actions/get-subscribed-messages.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="299">
-          <caret line="81" column="33" lean-forward="false" selection-start-line="81" selection-start-column="33" selection-end-line="81" selection-end-column="33" />
+        <state relative-caret-position="348">
+          <caret line="66" column="46" lean-forward="false" selection-start-line="66" selection-start-column="46" selection-end-line="66" selection-end-column="46" />
           <folding />
         </state>
       </provider>

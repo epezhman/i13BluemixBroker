@@ -24,16 +24,10 @@ function main(params) {
 
             parallel({
                     timestamp: (callback) => {
-                        ows.actions.invoke({
-                            name: "pubsub/last_read",
-                            blocking: true,
-                            result: true,
-                            params: {
-                                subscriber_id: params.subscriber_id
-                            }
-                        }).then(result => {
+                        let getLast = getLastRead(cloudant,params.subscriber_id );
+                        getLast.then(result => {
                                 console.log('[get-subscribed-messages.main] success: got the last subscribed timestamp');
-                                callback(null, result.response.result.result);
+                                callback(null, result['result']);
                             }
                         ).catch(err => {
                                 console.log('[get-subscribed-messages.main] err: could NOT get last subscribed timestamp');
@@ -80,7 +74,7 @@ function main(params) {
                         ],
                         "sort": [
                             {
-                                "timestamp:number": "desc"
+                                "timestamp:number": "asc"
                             }
                         ]
                     }, (err, result) => {
@@ -101,3 +95,59 @@ function main(params) {
     }
     return {message: "Subscriber Id is missing"};
 }
+
+function getLastRead(cloudant, subscriber_id) {
+    return new Promise((resolve, reject) => {
+
+        const sub_logs = cloudant.db.use('subscribers_logs');
+        sub_logs.get(subscriber_id, {revs_info: true}, (err, data) => {
+            const time = new Date();
+            const timestamp = Date.now();
+            if (err) {
+                sub_logs.insert({
+                    _id: subscriber_id,
+                    time: time,
+                    timestamp: timestamp
+                }, (err, body, head) => {
+                    if (err) {
+                        console.log('[get-subscribed-messages.get-last-read] error: error insert subscriber first time');
+                        console.log(err);
+                        reject({
+                            result: 'Error occurred inserting the subscriber for first time.'
+                        });
+                    }
+                    else {
+                        console.log('[get-subscribed-messages.get-last-read] success: success insert subscriber first time');
+                        resolve({
+                            result: 0
+                        });
+                    }
+                });
+            }
+            else {
+                let old_timestamp = data.timestamp;
+                sub_logs.insert({
+                    _id: data._id,
+                    _rev: data._rev,
+                    time: time,
+                    timestamp: timestamp
+                }, (err, body, head) => {
+                    if (err) {
+                        console.log('[get-subscribed-messages.get-last-read] error: error updating subscriber log');
+                        console.log(err);
+                        reject({
+                            result: 'Error occurred updating the subscriber log.'
+                        });
+                    }
+                    else {
+                        console.log('[get-subscribed-messages.get-last-read] success: success updating subscriber log');
+                        resolve({
+                            result: old_timestamp
+                        });
+                    }
+                });
+            }
+        });
+    });
+}
+
