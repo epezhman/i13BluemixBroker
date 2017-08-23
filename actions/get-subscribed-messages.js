@@ -24,7 +24,7 @@ function main(params) {
 
             parallel({
                     timestamp: (callback) => {
-                        let getLast = getLastRead(cloudant,params.subscriber_id );
+                        let getLast = getLastRead(cloudant, params.subscriber_id);
                         getLast.then(result => {
                                 console.log('[get-subscribed-messages.main] success: got the last subscribed timestamp');
                                 callback(null, result['result']);
@@ -62,34 +62,41 @@ function main(params) {
                             error: 'Error in getting topics or timestamp'
                         });
                     }
-                    messages.find({
-                        "selector": {
-                            "timestamp": {"$gt": results['timestamp']},
-                            "topic": {"$in": results['topics']}
-                        },
-                        "fields": [
-                            "topic",
-                            "message",
-                            "time"
-                        ],
-                        "sort": [
-                            {
-                                "timestamp:number": "asc"
+                    if ( results['topics'] && results['topics'].length) {
+                        messages.find({
+                            "selector": {
+                                "timestamp": {"$gt": results['timestamp']},
+                                "topic": {"$in": results['topics']}
+                            },
+                            "fields": [
+                                "topic",
+                                "message",
+                                "time"
+                            ],
+                            "sort": [
+                                {
+                                    "timestamp:number": "asc"
+                                }
+                            ]
+                        }, (err, result) => {
+                            if (!err) {
+                                console.log('[get-subscribed-messages.main] success: got the subscribed messages');
+                                return resolve(result);
                             }
-                        ]
-                    }, (err, result) => {
-                        if (!err) {
-                            console.log('[get-subscribed-messages.main] success: got the subscribed messages');
-                            return resolve(result);
-                        }
-                        else {
-                            console.log('[get-subscribed-messages.main] error: Error in getting the subscribed messages');
-                            console.log(err);
-                            return reject({
-                                error: 'Error in query the subscribed messages'
-                            });
-                        }
-                    });
+                            else {
+                                console.log('[get-subscribed-messages.main] error: Error in getting the subscribed messages');
+                                console.log(err);
+                                return reject({
+                                    error: 'Error in query the subscribed messages'
+                                });
+                            }
+                        });
+                    }
+                    else
+                    {
+                        console.log('[get-subscribed-messages.main] success: No Topics');
+                        return resolve([])
+                    }
                 });
         });
     }
