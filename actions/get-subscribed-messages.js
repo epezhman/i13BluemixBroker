@@ -72,11 +72,6 @@ function main(params) {
                                 "topic",
                                 "message",
                                 "time"
-                            ],
-                            "sort": [
-                                {
-                                    "timestamp:number": "asc"
-                                }
                             ]
                         }, (err, result) => {
                             if (!err) {
