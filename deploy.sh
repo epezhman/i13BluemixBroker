@@ -54,6 +54,12 @@ function install() {
   --param "WATSON_IOT_API_USERNAME" $WATSON_IOT_API_USERNAME \
   --param "WATSON_IOT_API_PASSWORD" $WATSON_IOT_API_PASSWORD
 
+   wsk action create pubsub/publish_stateless actions/publish-stateless.js --web true \
+  --param "WATSON_IOT_ORG" $WATSON_IOT_ORG \
+  --param "WATSON_IOT_APPLICATION_TYPE" $WATSON_IOT_APPLICATION_TYPE \
+  --param "WATSON_IOT_API_USERNAME" $WATSON_IOT_API_USERNAME \
+  --param "WATSON_IOT_API_PASSWORD" $WATSON_IOT_API_PASSWORD
+
   echo "Creating sequence that ties published message read to broker action"
   wsk action create pubsub/broker-sequence \
     --sequence /_/$CLOUDANT_INSTANCE/read,pubsub/broker
@@ -68,6 +74,7 @@ function install() {
   wsk api create -n "GetSubscribedTopics" /pubsub /get_subscribed_topics get pubsub/get_sub_topics --response-type json
   wsk api create -n "GetSubscribedMessages" /pubsub /get_subscribed_messages get pubsub/get_sub_messages --response-type json
   wsk api create -n "RegisterSubscriber" /pubsub /register_subscriber get pubsub/register_subscriber --response-type json
+  wsk api create -n "PublishStateless" /pubsub /publish_stateless post pubsub/publish_stateless --response-type json
 
   echo -e "${GREEN}Install Complete${NC}"
 }
@@ -92,6 +99,7 @@ function uninstall() {
   wsk action delete pubsub/get_sub_topics
   wsk action delete pubsub/get_sub_messages
   wsk action delete pubsub/register_subscriber
+  wsk action delete pubsub/publish_stateless
 
   echo "Removing Sequences"
   wsk action delete pubsub/broker-sequence
