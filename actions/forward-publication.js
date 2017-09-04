@@ -18,7 +18,7 @@ const requestPromise = require('request-promise');
 
 function main(params) {
     return new Promise((resolve, reject) => {
-        let subscriber_url = `http://${params.WATSON_IOT_ORG}.messaging.internetofthings.ibmcloud.com:1883/api/v0002/application/types/${params.WATSON_IOT_APPLICATION_TYPE}/devices/${params.subscriber_id}/commands/published_message`;
+        let subscriber_url = `https://${params.WATSON_IOT_ORG}.messaging.internetofthings.ibmcloud.com:8883/api/v0002/application/types/${params.WATSON_IOT_APPLICATION_TYPE}/devices/${params.subscriber_id}/commands/published_message`;
         let req_options = {
             uri: subscriber_url,
             method: 'POST',
@@ -35,7 +35,7 @@ function main(params) {
         };
         requestPromise(req_options)
             .then(function (parsedBody) {
-                console.log(`[forward-publication.main] error: Message sent to Watson`);
+                console.log(`[forward-publication.main] success: Message sent to Watson`);
                 resolve({
                     result: 'Success. Message Sent to Watson.'
                 });

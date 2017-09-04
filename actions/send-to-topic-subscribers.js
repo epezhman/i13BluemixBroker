@@ -2,6 +2,10 @@ const Cloudant = require('cloudant');
 const openwhisk = require('openwhisk');
 const each = require('async/each');
 
+let subscribers = {};
+let last_checked_topics = {};
+
+const stale_time_ms = 1000;
 
 /**
  * 1.   Get subscribed messages of an app
@@ -12,7 +16,6 @@ const each = require('async/each');
  * @param   params.CLOUDANT_PASSWORD   Cloudant password (set once at action update time)
  * @return                             {message: string} OpenWhisk success/error response
  */
-let subscribers = null;
 
 function main(params) {
     return new Promise((resolve, reject) => {
@@ -22,15 +25,19 @@ function main(params) {
         });
 
         const subscribed_topics = cloudant.db.use('subscribed_topics');
+        if (!last_checked_topics.hasOwnProperty(params.topic)) {
+            last_checked_topics[params.topic] = Date.now();
+        }
 
-        if (subscribers) {
+        if (subscribers.hasOwnProperty(params.topic) && Date.now() - last_checked_topics[params.topic] < 1000) {
             forwardPublications(params.topic, params.message, Date.now(), resolve, reject)
         }
         else {
             subscribed_topics.get(params.topic, (err, result) => {
                 if (!err) {
                     console.log('[get-subscribed-messages.main] success: got the subscribed topics');
-                    subscribers = result['subscribers'];
+                    last_checked_topics[params.topic] = Date.now();
+                    subscribers[params.topic] = result['subscribers'];
                     forwardPublications(params.topic, params.message, Date.now(), resolve, reject)
                 }
                 else {
@@ -42,9 +49,9 @@ function main(params) {
 }
 
 
-function forwardPublications(message, topic, time, resolve, reject) {
+function forwardPublications(topic, message, time, resolve, reject) {
     const ows = openwhisk();
-    each(subscribers, function (sub_id, callback) {
+    each(subscribers[topic], function (sub_id, callback) {
         ows.actions.invoke({
             name: "pubsub/forward_publication",
             params: {
@@ -58,11 +65,10 @@ function forwardPublications(message, topic, time, resolve, reject) {
                 callback();
             }
         ).catch(err => {
-                console.log('[get-subscribed-messages.forwardPublications] err: could NOT forward the topic watson action');
+                console.log('[get-subscribed-messages.forwardPublications] error: could NOT forward the topic watson action');
                 callback(err);
             }
         );
-
     }, function (err) {
         if (err) {
             console.log('[get-subscribed-messages.forwardPublications] error: Error in forwarding the publications');

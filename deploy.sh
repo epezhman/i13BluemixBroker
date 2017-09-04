@@ -63,6 +63,7 @@ function install() {
   --param "WATSON_IOT_API_USERNAME" $WATSON_IOT_API_USERNAME \
   --param "WATSON_IOT_API_PASSWORD" $WATSON_IOT_API_PASSWORD
 
+  wsk action create pubsub/backup_message actions/backup-message.js
 
   echo "Creating sequence that ties published message read to broker action"
   wsk action create pubsub/broker-sequence \
@@ -106,6 +107,7 @@ function uninstall() {
   wsk action delete pubsub/publish_stateless
   wsk action delete pubsub/send_to_topic_subscribers
   wsk action delete pubsub/forward_publication
+  wsk action delete pubsub/backup_message
 
   echo "Removing Sequences"
   wsk action delete pubsub/broker-sequence

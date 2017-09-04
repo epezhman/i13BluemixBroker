@@ -7,6 +7,7 @@ const parallel = require('async/parallel');
  * 1.   Get subscribed messages of an app
  *
  * @param   params.subscriber_id       Subscriber ID
+ * @param   params.stateless           If stateless
  * @param   params.CLOUDANT_USERNAME   Cloudant username (set once at action update time)
  * @param   params.CLOUDANT_PASSWORD   Cloudant password (set once at action update time)
  * @return                             {message: string} OpenWhisk success/error response
@@ -19,7 +20,15 @@ function main(params) {
                 account: params.CLOUDANT_USERNAME,
                 password: params.CLOUDANT_PASSWORD
             });
-            const messages = cloudant.db.use('published_messages');
+            let messages = null;
+            if(params.stateless)
+            {
+                messages = cloudant.db.use('published_messages_bc');
+            }
+            else
+            {
+                messages = cloudant.db.use('published_messages');
+            }
             const ows = openwhisk();
 
             parallel({
@@ -30,7 +39,7 @@ function main(params) {
                                 callback(null, result['result']);
                             }
                         ).catch(err => {
-                                console.log('[get-subscribed-messages.main] err: could NOT get last subscribed timestamp');
+                                console.log('[get-subscribed-messages.main] error: could NOT get last subscribed timestamp');
                                 callback(err);
                             }
                         );
@@ -48,7 +57,7 @@ function main(params) {
                                 callback(null, result.response.result.topics);
                             }
                         ).catch(err => {
-                                console.log('[get-subscribed-messages.main] err: could NOT get subscribed topics');
+                                console.log('[get-subscribed-messages.main] error: could NOT get subscribed topics');
                                 callback(err);
                             }
                         );

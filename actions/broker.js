@@ -31,7 +31,7 @@ function main(params) {
             if (!err) {
                 console.log('[get-subscribed-topics.main] success: got the subscribed topics');
                 each(result['subscribers'], function (sub_id, callback) {
-                    let subscriber_url = `http://${params.WATSON_IOT_ORG}.messaging.internetofthings.ibmcloud.com:1883/api/v0002/application/types/${params.WATSON_IOT_APPLICATION_TYPE}/devices/${sub_id}/commands/published_message`;
+                    let subscriber_url = `https://${params.WATSON_IOT_ORG}.messaging.internetofthings.ibmcloud.com:8883/api/v0002/application/types/${params.WATSON_IOT_APPLICATION_TYPE}/devices/${sub_id}/commands/published_message`;
                     let req_options = {
                         uri: subscriber_url,
                         method: 'POST',

@@ -6,12 +6,11 @@ const openwhisk = require('openwhisk');
  *
  * @param   params.topics              The topics of the message
  * @param   params.message             The body of the published message
- * @return                             Standard OpenWhisk success/error response
+ * @param   params.polling_supported   If messages should be backed up to support polling
  * @param   params.CLOUDANT_USERNAME   Cloudant username (set once at action update time)
  * @param   params.CLOUDANT_PASSWORD   Cloudant password (set once at action update time)
+ * @return                             Standard OpenWhisk success/error response
  */
-
-let subscribers = {};
 
 function main(params) {
     if (params.hasOwnProperty('topics') && params.hasOwnProperty('message')) {
@@ -19,6 +18,17 @@ function main(params) {
             const ows = openwhisk();
             each(params.topics.split(','), (topic, callback) => {
                 topic = topic.trim();
+
+                if(params.polling_supported)
+                {
+                    ows.actions.invoke({
+                        name: "pubsub/backup_message",
+                        params: {
+                            topic: topic,
+                            message: params.message
+                        }
+                    });
+                }
                 ows.actions.invoke({
                     name: "pubsub/send_to_topic_subscribers",
                     params: {
@@ -30,7 +40,7 @@ function main(params) {
                         callback();
                     }
                 ).catch(err => {
-                        console.log('[publish-stateless.main] err: could NOT forward the topics');
+                        console.log('[publish-stateless.main] error: could NOT forward the topics');
                         callback(err);
                     }
                 );
