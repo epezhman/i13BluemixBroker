@@ -18,63 +18,58 @@ function install() {
 
   echo -e "${YELLOW}Installing OpenWhisk actions, triggers, and rules for check-deposit..."
 
-  echo "Logging in to Bluemix"
-  wsk bluemix login --user $OPENWHISK_USER_NAME \
-  --password $OPENWHISK_PASSWORD \
-  --namespace $OPENWHISK_NAMESPACE
-
   echo "Creating PubSub package"
-  wsk package create pubsub \
+  bx wsk package create pubsub \
     --param "CLOUDANT_USERNAME" $CLOUDANT_USERNAME \
     --param "CLOUDANT_PASSWORD" $CLOUDANT_PASSWORD
 
   echo "Binding Cloudant package with credential parameters"
-  wsk package bind /whisk.system/cloudant "$CLOUDANT_INSTANCE" \
+  bx wsk package bind /whisk.system/cloudant "$CLOUDANT_INSTANCE" \
   --param username "$CLOUDANT_USERNAME" \
   --param password "$CLOUDANT_PASSWORD" \
   --param host "$CLOUDANT_USERNAME.cloudant.com"
 
   echo "Creating trigger to fire events when messages are published"
-  wsk trigger create message-published \
+  bx wsk trigger create message-published \
     --feed "/_/$CLOUDANT_INSTANCE/changes" \
     --param dbname "$CLOUDANT_PUBLISHED_MESSAGES_DATABASE"
 
   echo "Creating Actions"
-  wsk action create pubsub/publish actions/publish.js --web true
-  wsk action create pubsub/last_read actions/last-read-subscriber.js
-  wsk action create pubsub/subscribe actions/subscribe.js --web true
-  wsk action create pubsub/unsubscribe actions/unsubscribe.js --web true
-  wsk action create pubsub/get_sub_topics actions/get-subscribed-topics.js --web true
-  wsk action create pubsub/get_sub_messages actions/get-subscribed-messages.js --web true
-  wsk action create pubsub/register_subscriber actions/register-subscriber.js --web true
+  bx wsk action create pubsub/publish actions/publish.js --web true
+  bx wsk action create pubsub/last_read actions/last-read-subscriber.js
+  bx wsk action create pubsub/subscribe actions/subscribe.js --web true
+  bx wsk action create pubsub/unsubscribe actions/unsubscribe.js --web true
+  bx wsk action create pubsub/get_sub_topics actions/get-subscribed-topics.js --web true
+  bx wsk action create pubsub/get_sub_messages actions/get-subscribed-messages.js --web true
+  bx wsk action create pubsub/register_subscriber actions/register-subscriber.js --web true
 
-  wsk action create pubsub/broker actions/broker.js \
+  bx wsk action create pubsub/broker actions/broker.js \
   --param "WATSON_IOT_ORG" $WATSON_IOT_ORG \
   --param "WATSON_IOT_APPLICATION_TYPE" $WATSON_IOT_APPLICATION_TYPE \
   --param "WATSON_IOT_API_USERNAME" $WATSON_IOT_API_USERNAME \
   --param "WATSON_IOT_API_PASSWORD" $WATSON_IOT_API_PASSWORD
 
-   wsk action create pubsub/publish_stateless actions/publish-stateless.js --web true \
+   bx wsk action create pubsub/publish_stateless actions/publish-stateless.js --web true \
   --param "WATSON_IOT_ORG" $WATSON_IOT_ORG \
   --param "WATSON_IOT_APPLICATION_TYPE" $WATSON_IOT_APPLICATION_TYPE \
   --param "WATSON_IOT_API_USERNAME" $WATSON_IOT_API_USERNAME \
   --param "WATSON_IOT_API_PASSWORD" $WATSON_IOT_API_PASSWORD
 
   echo "Creating sequence that ties published message read to broker action"
-  wsk action create pubsub/broker-sequence \
+  bx wsk action create pubsub/broker-sequence \
     --sequence /_/$CLOUDANT_INSTANCE/read,pubsub/broker
 
   echo "Creating rule that maps published messages change trigger to broker sequence"
-  wsk rule create broker-rule message-published pubsub/broker-sequence
+  bx wsk rule create broker-rule message-published pubsub/broker-sequence
 
   echo "Creating API"
-  wsk api create -n "Publish" /pubsub /publish post pubsub/publish --response-type json
-  wsk api create -n "Subscribe" /pubsub /subscribe post pubsub/subscribe --response-type json
-  wsk api create -n "Unsubscribe" /pubsub /unsubscribe post pubsub/unsubscribe --response-type json
-  wsk api create -n "GetSubscribedTopics" /pubsub /get_subscribed_topics get pubsub/get_sub_topics --response-type json
-  wsk api create -n "GetSubscribedMessages" /pubsub /get_subscribed_messages get pubsub/get_sub_messages --response-type json
-  wsk api create -n "RegisterSubscriber" /pubsub /register_subscriber get pubsub/register_subscriber --response-type json
-  wsk api create -n "PublishStateless" /pubsub /publish_stateless post pubsub/publish_stateless --response-type json
+  bx wsk api create -n "Publish" /pubsub /publish post pubsub/publish --response-type json
+  bx wsk api create -n "Subscribe" /pubsub /subscribe post pubsub/subscribe --response-type json
+  bx wsk api create -n "Unsubscribe" /pubsub /unsubscribe post pubsub/unsubscribe --response-type json
+  bx wsk api create -n "GetSubscribedTopics" /pubsub /get_subscribed_topics get pubsub/get_sub_topics --response-type json
+  bx wsk api create -n "GetSubscribedMessages" /pubsub /get_subscribed_messages get pubsub/get_sub_messages --response-type json
+  bx wsk api create -n "RegisterSubscriber" /pubsub /register_subscriber get pubsub/register_subscriber --response-type json
+  bx wsk api create -n "PublishStateless" /pubsub /publish_stateless post pubsub/publish_stateless --response-type json
 
   echo -e "${GREEN}Install Complete${NC}"
 }
@@ -83,40 +78,47 @@ function uninstall() {
   echo -e "${RED}Uninstalling..."
 
   echo "Removing rules..."
-  wsk rule disable broker-rule
+  bx wsk rule disable broker-rule
   sleep 1
-  wsk rule delete broker-rule
+  bx wsk rule delete broker-rule
 
   echo "Removing triggers..."
-  wsk trigger delete message-published
+  bx wsk trigger delete message-published
 
   echo "Removing Actions"
-  wsk action delete pubsub/publish
-  wsk action delete pubsub/last_read
-  wsk action delete pubsub/subscribe
-  wsk action delete pubsub/unsubscribe
-  wsk action delete pubsub/broker
-  wsk action delete pubsub/get_sub_topics
-  wsk action delete pubsub/get_sub_messages
-  wsk action delete pubsub/register_subscriber
-  wsk action delete pubsub/publish_stateless
+  bx wsk action delete pubsub/publish
+  bx wsk action delete pubsub/last_read
+  bx wsk action delete pubsub/subscribe
+  bx wsk action delete pubsub/unsubscribe
+  bx wsk action delete pubsub/broker
+  bx wsk action delete pubsub/get_sub_topics
+  bx wsk action delete pubsub/get_sub_messages
+  bx wsk action delete pubsub/register_subscriber
+  bx wsk action delete pubsub/publish_stateless
 
   echo "Removing Sequences"
-  wsk action delete pubsub/broker-sequence
+  bx wsk action delete pubsub/broker-sequence
 
   echo "Removing packages..."
-  wsk package delete "$CLOUDANT_INSTANCE"
+  bx wsk package delete "$CLOUDANT_INSTANCE"
 
   echo "Deleting API"
-  wsk api delete /pubsub
+  bx wsk api delete /pubsub
 
   echo "Removing package..."
-  wsk package delete pubsub
+  bx wsk package delete pubsub
 
   echo -e "${GREEN}Uninstall Complete${NC}"
 }
 
+function login() {
+  echo "Logging in to Bluemix"
+  bx logout
+  bx login -a $OPENWHISK_UK -o $OPENWHISK_ORG -s $OPENWHISK_SPACE --apikey $OPENWHISK_API_KEY
+}
+
 function reinstall() {
+    login
     uninstall
     install
 }

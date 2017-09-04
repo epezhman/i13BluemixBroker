@@ -1,5 +1,6 @@
 const Cloudant = require('cloudant');
 const each = require('async/each');
+const eachLimit = require('async/eachLimit');
 const requestPromise = require('request-promise');
 
 /**
@@ -27,7 +28,7 @@ function main(params) {
             });
 
             const subscribed_topics = cloudant.db.use('subscribed_topics');
-            each(params.topics.split(','), (topic, mcb) => {
+            eachLimit(params.topics.split(','),100, (topic, mcb) => {
                 topic = topic.trim();
                 if (topic.length) {
                     if (subscribers.hasOwnProperty(topic)) {
