@@ -1,6 +1,7 @@
 const Cloudant = require('cloudant');
 const each = require('async/each');
 const requestPromise = require('request-promise');
+const openwhisk = require('openwhisk');
 
 /**
  * 1.   Send the published messages to subscribers
@@ -26,34 +27,26 @@ function main(params) {
             password: params.CLOUDANT_PASSWORD
         });
         const subscribed_topics = cloudant.db.use('subscribed_topics');
+        const ows = openwhisk();
 
         subscribed_topics.get(params.topic, (err, result) => {
             if (!err) {
                 console.log('[get-subscribed-topics.main] success: got the subscribed topics');
                 each(result['subscribers'], function (sub_id, callback) {
-                    let subscriber_url = `https://${params.WATSON_IOT_ORG}.messaging.internetofthings.ibmcloud.com:8883/api/v0002/application/types/${params.WATSON_IOT_APPLICATION_TYPE}/devices/${sub_id}/commands/published_message`;
-                    let req_options = {
-                        uri: subscriber_url,
-                        method: 'POST',
-                        body:{
-                            message: params.message,
+                    ows.actions.invoke({
+                        name: "pubsub/forward_publication",
+                        params: {
                             topic: params.topic,
-                            time: params.time
-                        },
-                        auth: {
-                            'username': params.WATSON_IOT_API_USERNAME,
-                            'password': params.WATSON_IOT_API_PASSWORD
-                        },
-                        json: true
-                    };
-                    requestPromise(req_options)
-                        .then(function (parsedBody) {
-                            callback()
-                        })
-                        .catch(function (err) {
-                            console.log(`[broker.main] error: Message could not be sent to ${sub_id}`);
-                            callback()
-                        });
+                            message: params.message,
+                            time: params.time,
+                            subscriber_id: sub_id
+                        }
+                    }).then(function (parsedBody) {
+                        callback()
+                    }).catch(function (err) {
+                        console.log(`[broker.main] error: Message could not be sent to ${sub_id}`);
+                        callback()
+                    });
 
                 }, function (err) {
                     if (err) {
