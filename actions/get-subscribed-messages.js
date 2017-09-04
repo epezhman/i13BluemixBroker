@@ -152,4 +152,3 @@ function getLastRead(cloudant, subscriber_id) {
         });
     });
 }
-

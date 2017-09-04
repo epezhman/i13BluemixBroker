@@ -16,7 +16,7 @@ function install() {
   # Exit if any command fails
   set -e
 
-  echo -e "${YELLOW}Installing OpenWhisk actions, triggers, and rules for check-deposit..."
+  echo -e "${YELLOW}Installing OpenWhisk actions, triggers, and rules for check-deposit...${NC}"
 
   echo "Logging in to Bluemix"
   wsk bluemix login --user $OPENWHISK_USER_NAME \
@@ -54,11 +54,15 @@ function install() {
   --param "WATSON_IOT_API_USERNAME" $WATSON_IOT_API_USERNAME \
   --param "WATSON_IOT_API_PASSWORD" $WATSON_IOT_API_PASSWORD
 
-   wsk action create pubsub/publish_stateless actions/publish-stateless.js --web true \
+  wsk action create pubsub/publish_stateless actions/publish-stateless.js --web true
+  wsk action create pubsub/send_to_topic_subscribers actions/send-to-topic-subscribers.js
+
+  wsk action create pubsub/forward_publication actions/forward-publication.js \
   --param "WATSON_IOT_ORG" $WATSON_IOT_ORG \
   --param "WATSON_IOT_APPLICATION_TYPE" $WATSON_IOT_APPLICATION_TYPE \
   --param "WATSON_IOT_API_USERNAME" $WATSON_IOT_API_USERNAME \
   --param "WATSON_IOT_API_PASSWORD" $WATSON_IOT_API_PASSWORD
+
 
   echo "Creating sequence that ties published message read to broker action"
   wsk action create pubsub/broker-sequence \
@@ -80,7 +84,7 @@ function install() {
 }
 
 function uninstall() {
-  echo -e "${RED}Uninstalling..."
+  echo -e "${RED}Uninstalling...${NC}"
 
   echo "Removing rules..."
   wsk rule disable broker-rule
@@ -100,6 +104,8 @@ function uninstall() {
   wsk action delete pubsub/get_sub_messages
   wsk action delete pubsub/register_subscriber
   wsk action delete pubsub/publish_stateless
+  wsk action delete pubsub/send_to_topic_subscribers
+  wsk action delete pubsub/forward_publication
 
   echo "Removing Sequences"
   wsk action delete pubsub/broker-sequence
