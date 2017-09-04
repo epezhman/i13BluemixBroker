@@ -19,7 +19,7 @@ function main(params) {
             each(params.topics.split(','), (topic, callback) => {
                 topic = topic.trim();
 
-                if(params.polling_supported)
+                if(params.polling_supported && params.polling_supported === "true")
                 {
                     ows.actions.invoke({
                         name: "pubsub/backup_message",

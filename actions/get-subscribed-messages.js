@@ -21,12 +21,10 @@ function main(params) {
                 password: params.CLOUDANT_PASSWORD
             });
             let messages = null;
-            if(params.stateless)
-            {
+            if (params.stateless && params.stateless === "true") {
                 messages = cloudant.db.use('published_messages_bc');
             }
-            else
-            {
+            else {
                 messages = cloudant.db.use('published_messages');
             }
             const ows = openwhisk();
@@ -71,7 +69,7 @@ function main(params) {
                             error: 'Error in getting topics or timestamp'
                         });
                     }
-                    if ( results['topics'] && results['topics'].length) {
+                    if (results['topics'] && results['topics'].length) {
                         messages.find({
                             "selector": {
                                 "timestamp": {"$gt": results['timestamp']},
@@ -96,8 +94,7 @@ function main(params) {
                             }
                         });
                     }
-                    else
-                    {
+                    else {
                         console.log('[get-subscribed-messages.main] success: No Topics');
                         return resolve([])
                     }
