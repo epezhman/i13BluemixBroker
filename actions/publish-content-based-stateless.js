@@ -26,7 +26,7 @@ function main(params) {
                 ows.actions.invoke({
                     name: "pubsub/backup_content_based_message",
                     params: {
-                        first_predicte: firstPredicate,
+                        first_predicate: firstPredicate,
                         contents: params.contents,
                         message: params.message
                     }

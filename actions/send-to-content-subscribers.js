@@ -35,8 +35,8 @@ function main(params) {
             subscribed_contents.get(params.first_predicate, (err, result) => {
                 if (!err) {
                     console.log('[send-to-content-subscribers.main] success: got the subscribed topics');
-                    last_checked_contents[params.topic] = Date.now();
-                    subscribers[params.topic] = result['subscribers'];
+                    last_checked_contents[params.first_predicate] = Date.now();
+                    subscribers[params.first_predicate] = result['subscribers'];
                     forwardPublications(params, Date.now(), resolve, reject)
                 }
                 else {
