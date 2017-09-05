@@ -2,6 +2,8 @@
   <dictionary name="epezhman">
     <words>
       <w>cloudant</w>
+      <w>openwhisk</w>
+      <w>pubsub</w>
     </words>
   </dictionary>
 </component>

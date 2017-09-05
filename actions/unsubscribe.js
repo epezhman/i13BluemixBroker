@@ -2,7 +2,6 @@ const Cloudant = require('cloudant');
 const each = require('async/each');
 const array = require('lodash/array');
 
-
 /**
  * 1.   For subscribing to multiple topics at once
  *
@@ -14,67 +13,57 @@ const array = require('lodash/array');
  */
 
 function main(params) {
-    if (params.hasOwnProperty('topics') && params.hasOwnProperty('subscriber_id')) {
-
-        return new Promise((resolve, reject) => {
-
-            const cloudant = new Cloudant({
-                account: params.CLOUDANT_USERNAME,
-                password: params.CLOUDANT_PASSWORD
-            });
-
-            const subscribed_topics = cloudant.db.use('subscribed_topics');
-
-            each(params.topics.split(','), (topic, mcb) => {
-                topic = topic.trim();
-                if (topic.length) {
-                    subscribed_topics.get(topic, {revs_info: true}, (err, data) => {
-                        if (!err) {
-                            subscribed_topics.insert({
-                                _id: data._id,
-                                _rev: data._rev,
-                                subscribers: array.remove(data.subscribers, function (_sub_id) {
-                                    return _sub_id !== params.subscriber_id
-                                })
-                            }, (err, body, head) => {
-                                if (err) {
-                                    console.log(err);
-                                    mcb('[last-read-subscribe.main] error: removing subscriber from topics list')
-                                }
-                                else {
-                                    removeTopicToSubscriber(cloudant, topic, params.subscriber_id, mcb);
-                                }
-                            });
-                        }
-                        else {
-                            mcb();
-                        }
-                    });
-                }
-            }, (err) => {
-                if (err) {
-                    console.log('[unsubscribe.main] error: subscription not deleted');
-                    console.log(err);
-                    reject({
-                        result: 'Error occurred deleting the subscriptions.'
-                    });
-                } else {
-                    console.log('[unsubscribe.main] success: subscription deleted');
-                    resolve({
-                        result: 'Success. Subscriptions deleted.'
-                    });
-                }
-            });
-
+    return new Promise((resolve, reject) => {
+        const cloudant = new Cloudant({
+            account: params.CLOUDANT_USERNAME,
+            password: params.CLOUDANT_PASSWORD
         });
-    }
-    return {message: "Either subscriber id or topics are not provided"};
+        const subscribed_topics = cloudant.db.use('subscribed_topics');
+        each(params.topics.split(','), (topic, mcb) => {
+            topic = topic.trim();
+            if (topic.length) {
+                subscribed_topics.get(topic, {revs_info: true}, (err, data) => {
+                    if (!err) {
+                        subscribed_topics.insert({
+                            _id: data._id,
+                            _rev: data._rev,
+                            subscribers: array.remove(data.subscribers, function (_sub_id) {
+                                return _sub_id !== params.subscriber_id
+                            })
+                        }, (err, body, head) => {
+                            if (err) {
+                                console.log(err);
+                                mcb('[last-read-subscribe.main] error: removing subscriber from topics list')
+                            }
+                            else {
+                                removeTopicToSubscriber(cloudant, topic, params.subscriber_id, mcb);
+                            }
+                        });
+                    }
+                    else {
+                        mcb();
+                    }
+                });
+            }
+        }, (err) => {
+            if (err) {
+                console.log('[unsubscribe.main] error: subscription not deleted');
+                console.log(err);
+                reject({
+                    result: 'Error occurred deleting the subscriptions.'
+                });
+            } else {
+                console.log('[unsubscribe.main] success: subscription deleted');
+                resolve({
+                    result: 'Success. Subscriptions deleted.'
+                });
+            }
+        });
+    });
 }
-
 
 function removeTopicToSubscriber(cloudant, topic, subscriber_id, mcb) {
     const subscribers = cloudant.db.use('subscribers');
-
     subscribers.get(subscriber_id, {revs_info: true}, (err, data) => {
         if (!err) {
             subscribers.insert({

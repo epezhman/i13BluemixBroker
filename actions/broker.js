@@ -1,6 +1,5 @@
 const Cloudant = require('cloudant');
 const each = require('async/each');
-const requestPromise = require('request-promise');
 const openwhisk = require('openwhisk');
 
 /**
@@ -28,7 +27,6 @@ function main(params) {
         });
         const subscribed_topics = cloudant.db.use('subscribed_topics');
         const ows = openwhisk();
-
         subscribed_topics.get(params.topic, (err, result) => {
             if (!err) {
                 console.log('[get-subscribed-topics.main] success: got the subscribed topics');

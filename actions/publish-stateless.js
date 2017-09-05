@@ -9,57 +9,52 @@ const openwhisk = require('openwhisk');
  * @param   params.polling_supported   If messages should be backed up to support polling
  * @param   params.CLOUDANT_USERNAME   Cloudant username (set once at action update time)
  * @param   params.CLOUDANT_PASSWORD   Cloudant password (set once at action update time)
- * @return                             Standard OpenWhisk success/error response
+ * @return                             Promise OpenWhisk success/error response
  */
 
 function main(params) {
-    if (params.hasOwnProperty('topics') && params.hasOwnProperty('message')) {
-        return new Promise((resolve, reject) => {
-            const ows = openwhisk();
-            each(params.topics.split(','), (topic, callback) => {
-                topic = topic.trim();
-
-                if(params.polling_supported && params.polling_supported === "true")
-                {
-                    ows.actions.invoke({
-                        name: "pubsub/backup_message",
-                        params: {
-                            topic: topic,
-                            message: params.message
-                        }
-                    });
-                }
+    return new Promise((resolve, reject) => {
+        const ows = openwhisk();
+        each(params.topics.split(','), (topic, callback) => {
+            topic = topic.trim();
+            if (params.polling_supported && params.polling_supported === "true") {
                 ows.actions.invoke({
-                    name: "pubsub/send_to_topic_subscribers",
+                    name: "pubsub/backup_message",
                     params: {
                         topic: topic,
                         message: params.message
                     }
-                }).then(result => {
-                        console.log('[publish-stateless.main] success: forwarded the topic and message');
-                        callback();
-                    }
-                ).catch(err => {
-                        console.log('[publish-stateless.main] error: could NOT forward the topics');
-                        callback(err);
-                    }
-                );
-
-            }, (err) => {
-                if (err) {
-                    console.log('[publish-stateless.main] error: message not published ');
-                    console.log(err);
-                    reject({
-                        result: 'Error occurred publishing the message.'
-                    });
-                } else {
-                    console.log('[publish-stateless.main] success: message published');
-                    resolve({
-                        result: 'Success. Message Published.'
-                    });
+                });
+            }
+            ows.actions.invoke({
+                name: "pubsub/send_to_topic_subscribers",
+                params: {
+                    topic: topic,
+                    message: params.message
                 }
-            });
+            }).then(result => {
+                    console.log('[publish-stateless.main] success: forwarded the topic and message');
+                    callback();
+                }
+            ).catch(err => {
+                    console.log('[publish-stateless.main] error: could NOT forward the topics');
+                    callback(err);
+                }
+            );
+
+        }, (err) => {
+            if (err) {
+                console.log('[publish-stateless.main] error: message not published ');
+                console.log(err);
+                reject({
+                    result: 'Error occurred publishing the message.'
+                });
+            } else {
+                console.log('[publish-stateless.main] success: message published');
+                resolve({
+                    result: 'Success. Message Published.'
+                });
+            }
         });
-    }
-    return {message: "Either message or topics are not provided"};
+    });
 }

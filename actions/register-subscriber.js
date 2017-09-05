@@ -6,7 +6,7 @@ const uuid = require('uuid');
  *
  * @param   params.CLOUDANT_USERNAME   Cloudant username (set once at action update time)
  * @param   params.CLOUDANT_PASSWORD   Cloudant password (set once at action update time)
- * @return                             Standard OpenWhisk success/error response
+ * @return                             Promise Standard OpenWhisk success/error response
  */
 
 function main(params) {
@@ -15,10 +15,8 @@ function main(params) {
             account: params.CLOUDANT_USERNAME,
             password: params.CLOUDANT_PASSWORD
         });
-
         const subscribers = cloudant.db.use('subscribers');
         let _id = uuid.v1();
-
         subscribers.get(_id, {}, (err, data) => {
             if (err) {
                 subscribers.insert({
@@ -48,7 +46,6 @@ function main(params) {
                     result: 'Subscriber with the ID exist'
                 });
             }
-
         });
     });
 }

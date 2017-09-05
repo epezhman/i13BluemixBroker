@@ -47,7 +47,5 @@ function main(params) {
                     result: 'Error. Message could not be sent to Watson.'
                 });
             });
-
     });
-
 }
