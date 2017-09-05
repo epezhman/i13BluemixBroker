@@ -7,7 +7,7 @@ const stale_time_ms = 1000;
 /**
  * 1.   It receives a message and its topics from the publisher and submits them to the Cloudant
  *
- * @param   params.contents                     The topic of the message
+ * @param   params.predicates                   The predicates of the message
  * @param   params.message                      The body of the published message
  * @param   params.time                         The message time
  * @param   params.subscriber_id                The subscriber ID
@@ -23,7 +23,7 @@ function main(params) {
         }
         if (subscribers.hasOwnProperty(params.subscriber_id) &&
             Date.now() - last_checked_subscribers_contents[params.subscriber_id] < stale_time_ms) {
-            if (subscribers[params.subscriber_id].length) {
+            if (Object.keys(subscribers[params.subscriber_id]).length) {
                 forwardPublications(params, Date.now(), resolve, reject)
             }
         }
@@ -38,7 +38,7 @@ function main(params) {
                     console.log('[cache-content-based-subscribers.main] success: got the subscribed topics');
                     last_checked_subscribers_contents[params.subscriber_id] = Date.now();
                     subscribers[params.subscriber_id] = result.hasOwnProperty('predicates') ? result['predicates'] : [];
-                    if (subscribers[params.subscriber_id].length) {
+                    if (Object.keys(subscribers[params.subscriber_id]).length) {
                         forwardPublications(params, Date.now(), resolve, reject)
                     }
                 }
@@ -53,12 +53,12 @@ function main(params) {
 function forwardPublications(params, time, resolve, reject) {
     const ows = openwhisk();
     ows.actions.invoke({
-        name: "pubsub/preform_content_based_matching_forward_message",
+        name: "pubsub/perform_content_based_matching_forward_message",
         params: {
-            contents: params.contents,
+            predicates: params.predicates,
             message: params.message,
             time: time,
-            predicates: subscribers[params.subscriber_id],
+            subscriber_predicates: subscribers[params.subscriber_id],
             subscriber_id: params.subscriber_id
         }
     }).then(result => {

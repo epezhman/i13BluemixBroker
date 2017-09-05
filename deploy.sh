@@ -47,6 +47,12 @@ function install() {
   wsk action create pubsub/get_sub_topics actions/get-subscribed-topics.js --web true
   wsk action create pubsub/get_sub_messages actions/get-subscribed-messages.js --web true
   wsk action create pubsub/register_subscriber actions/register-subscriber.js --web true
+  wsk action create pubsub/publish_stateless actions/publish-stateless.js --web true
+  wsk action create pubsub/send_to_topic_subscribers actions/send-to-topic-subscribers.js
+  wsk action create pubsub/backup_message actions/backup-message.js
+  wsk action create pubsub/publish_content_based_stateless actions/publish-content-based-stateless.js --web true
+  wsk action create pubsub/send_to_content_subscribers actions/send-to-content-subscribers.js
+  wsk action create pubsub/cache_content_based_subscribers actions/cache-content-based-subscribers.js
 
   wsk action create pubsub/broker actions/broker.js \
   --param "WATSON_IOT_ORG" $WATSON_IOT_ORG \
@@ -54,16 +60,17 @@ function install() {
   --param "WATSON_IOT_API_USERNAME" $WATSON_IOT_API_USERNAME \
   --param "WATSON_IOT_API_PASSWORD" $WATSON_IOT_API_PASSWORD
 
-  wsk action create pubsub/publish_stateless actions/publish-stateless.js --web true
-  wsk action create pubsub/send_to_topic_subscribers actions/send-to-topic-subscribers.js
-
   wsk action create pubsub/forward_publication actions/forward-publication.js \
   --param "WATSON_IOT_ORG" $WATSON_IOT_ORG \
   --param "WATSON_IOT_APPLICATION_TYPE" $WATSON_IOT_APPLICATION_TYPE \
   --param "WATSON_IOT_API_USERNAME" $WATSON_IOT_API_USERNAME \
   --param "WATSON_IOT_API_PASSWORD" $WATSON_IOT_API_PASSWORD
 
-  wsk action create pubsub/backup_message actions/backup-message.js
+  wsk action create pubsub/perform_content_based_matching_forward_message actions/perform-content-based-matching-forward-message.js \
+  --param "WATSON_IOT_ORG" $WATSON_IOT_ORG \
+  --param "WATSON_IOT_APPLICATION_TYPE" $WATSON_IOT_APPLICATION_TYPE \
+  --param "WATSON_IOT_API_USERNAME" $WATSON_IOT_API_USERNAME \
+  --param "WATSON_IOT_API_PASSWORD" $WATSON_IOT_API_PASSWORD
 
   echo "Creating sequence that ties published message read to broker action"
   wsk action create pubsub/broker-sequence \
@@ -80,6 +87,7 @@ function install() {
   wsk api create -n "GetSubscribedMessages" /pubsub /get_subscribed_messages get pubsub/get_sub_messages --response-type json
   wsk api create -n "RegisterSubscriber" /pubsub /register_subscriber get pubsub/register_subscriber --response-type json
   wsk api create -n "PublishStateless" /pubsub /publish_stateless post pubsub/publish_stateless --response-type json
+  wsk api create -n "PublishContentBasedStateless" /pubsub /publish_content_based_stateless post pubsub/publish_content_based_stateless --response-type json
 
   echo -e "${GREEN}Install Complete${NC}"
 }
@@ -108,6 +116,10 @@ function uninstall() {
   wsk action delete pubsub/send_to_topic_subscribers
   wsk action delete pubsub/forward_publication
   wsk action delete pubsub/backup_message
+  wsk action delete pubsub/publish_content_based_stateless
+  wsk action delete pubsub/send_to_content_subscribers
+  wsk action delete pubsub/cache_content_based_subscribers
+  wsk action delete pubsub/perform_content_based_matching_forward_message
 
   echo "Removing Sequences"
   wsk action delete pubsub/broker-sequence

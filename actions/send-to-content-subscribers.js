@@ -10,7 +10,7 @@ const stale_time_ms = 1000;
  * 1.   Get subscribed messages of an app
  *
  * @param   params.first_predicate     First published predicate
- * @param   params.contents            Publication's predicates
+ * @param   params.predicates            Publication's predicates
  * @param   params.message             Publication message
  * @param   params.CLOUDANT_USERNAME   Cloudant username (set once at action update time)
  * @param   params.CLOUDANT_PASSWORD   Cloudant password (set once at action update time)
@@ -51,9 +51,9 @@ function forwardPublications(params, time, resolve, reject) {
     const ows = openwhisk();
     each(subscribers[params.first_predicate], function (sub_id, callback) {
         ows.actions.invoke({
-            name: "pubsub/forward_content_based_publication",
+            name: "pubsub/cache_content_based_subscribers",
             params: {
-                contents: params.contents,
+                predicates: params.predicates,
                 message: params.message,
                 time: time,
                 subscriber_id: sub_id
