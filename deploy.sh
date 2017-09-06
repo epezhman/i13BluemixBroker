@@ -53,6 +53,8 @@ function install() {
   wsk action create pubsub/publish_content_based_stateless actions/publish-content-based-stateless.js --web true
   wsk action create pubsub/send_to_content_subscribers actions/send-to-content-subscribers.js
   wsk action create pubsub/cache_content_based_subscribers actions/cache-content-based-subscribers.js
+  wsk action create pubsub/unsubscribe_predicates actions/unsubscribe-predicates.js
+  wsk action create pubsub/subscribe_predicates actions/subscribe-predicates.js --web true
 
   wsk action create pubsub/broker actions/broker.js \
   --param "WATSON_IOT_ORG" $WATSON_IOT_ORG \
@@ -88,6 +90,7 @@ function install() {
   wsk api create -n "RegisterSubscriber" /pubsub /register_subscriber get pubsub/register_subscriber --response-type json
   wsk api create -n "PublishStateless" /pubsub /publish_stateless post pubsub/publish_stateless --response-type json
   wsk api create -n "PublishContentBasedStateless" /pubsub /publish_content_based_stateless post pubsub/publish_content_based_stateless --response-type json
+  wsk api create -n "SubscribePredicates" /pubsub /subscribe_predicates post pubsub/subscribe_predicates --response-type json
 
   echo -e "${GREEN}Install Complete${NC}"
 }
@@ -120,6 +123,8 @@ function uninstall() {
   wsk action delete pubsub/send_to_content_subscribers
   wsk action delete pubsub/cache_content_based_subscribers
   wsk action delete pubsub/perform_content_based_matching_forward_message
+  wsk action delete pubsub/unsubscribe_predicates
+  wsk action delete pubsub/subscribe_predicates
 
   echo "Removing Sequences"
   wsk action delete pubsub/broker-sequence

@@ -31,7 +31,7 @@ function main(params) {
                         }, (err, body, head) => {
                             if (err) {
                                 console.log(err);
-                                mcb('[last-read-subscribe.main] error: error insert subscriber first time')
+                                mcb('[subscribe.main] error: error insert subscriber first time')
                             }
                             else {
                                 addTopicToSubscriber(cloudant, topic, params.subscriber_id, mcb);
@@ -46,7 +46,7 @@ function main(params) {
                         }, (err, body, head) => {
                             if (err) {
                                 console.log(err);
-                                mcb('[last-read-subscribe.main] error: appending subscriber first time')
+                                mcb('[subscribe.main] error: appending subscriber first time')
                             }
                             else {
                                 addTopicToSubscriber(cloudant, topic, params.subscriber_id, mcb);
@@ -80,6 +80,7 @@ function addTopicToSubscriber(cloudant, topic, subscriber_id, mcb) {
                 _id: data._id,
                 _rev: data._rev,
                 topics: data.hasOwnProperty('topics') ? array.union(data.topics, [topic]) : [topic],
+                predicates: data.hasOwnProperty('predicates') ? data.predicates : [],
                 time: data.time,
                 timestamp: data.timestamp
             }, (err, body, head) => {

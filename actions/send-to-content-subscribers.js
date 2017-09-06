@@ -31,8 +31,8 @@ function main(params) {
                 account: params.CLOUDANT_USERNAME,
                 password: params.CLOUDANT_PASSWORD
             });
-            const subscribed_contents = cloudant.db.use('subscribed_contents');
-            subscribed_contents.get(params.first_predicate, (err, result) => {
+            const subscribed_predicates = cloudant.db.use('subscribed_predicates');
+            subscribed_predicates.get(params.first_predicate, (err, result) => {
                 if (!err) {
                     console.log('[send-to-content-subscribers.main] success: got the subscribed topics');
                     last_checked_contents[params.first_predicate] = Date.now();

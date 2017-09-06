@@ -33,7 +33,7 @@ function main(params) {
                         }, (err, body, head) => {
                             if (err) {
                                 console.log(err);
-                                mcb('[last-read-subscribe.main] error: removing subscriber from topics list')
+                                mcb('[unsubscribe.main] error: removing subscriber from topics list')
                             }
                             else {
                                 removeTopicToSubscriber(cloudant, topic, params.subscriber_id, mcb);
@@ -72,12 +72,13 @@ function removeTopicToSubscriber(cloudant, topic, subscriber_id, mcb) {
                 topics: data.hasOwnProperty('topics') ? array.remove(data.topics, function (_topic) {
                     return _topic !== topic
                 }) : [],
+                predicates: data.hasOwnProperty('predicates') ? data.predicates : [],
                 time: data.time,
                 timestamp: data.timestamp
             }, (err, body, head) => {
                 if (err) {
                     console.log(err);
-                    mcb('[unsubscribe.main] error: removing topics from subscribers list')
+                    mcb('[unsubscribe.removeTopicToSubscriber] error: removing topics from subscribers list')
                 }
                 else {
                     mcb()
@@ -85,7 +86,7 @@ function removeTopicToSubscriber(cloudant, topic, subscriber_id, mcb) {
             });
         }
         else {
-            mcb('[unsubscribe.main] error: subscriber does not exist')
+            mcb('[unsubscribe.removeTopicToSubscriber] error: subscriber does not exist')
         }
     });
 }
