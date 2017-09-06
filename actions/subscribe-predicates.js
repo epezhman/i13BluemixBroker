@@ -20,6 +20,8 @@ function main(params) {
             password: params.CLOUDANT_PASSWORD
         });
         const ows = openwhisk();
+        console.log(params.predicates);
+        console.log(Object.keys(params.predicates));
         ows.actions.invoke({
             name: "pubsub/unsubscribe_predicates",
             blocking: true,
@@ -41,7 +43,6 @@ function main(params) {
         );
     });
 }
-
 
 function addSubscriberToPredicates(cloudant, params, resolve, reject) {
     const subscribed_predicates = cloudant.db.use('subscribed_predicates');

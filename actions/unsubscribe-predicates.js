@@ -1,5 +1,5 @@
 const Cloudant = require('cloudant');
-const eachSeries = require('async/eachSeries');
+const each = require('async/each');
 const array = require('lodash/array');
 
 /**
@@ -18,8 +18,10 @@ function main(params) {
             account: params.CLOUDANT_USERNAME,
             password: params.CLOUDANT_PASSWORD
         });
+        console.log(params.predicates);
+        console.log(Object.keys(params.predicates))
         const subscribed_predicates = cloudant.db.use('subscribed_predicates');
-        eachSeries(params.predicates, (predicate, mcb) => {
+        each(params.predicates, (predicate, mcb) => {
             if (params.predicates.hasOwnProperty(predicate)) {
                 subscribed_predicates.get(predicate, {revs_info: true}, (err, data) => {
                     if (!err) {
@@ -65,14 +67,14 @@ function main(params) {
                             timestamp: data.timestamp
                         }, (err, body, head) => {
                             if (err) {
-                                console.log('[unsubscribe.main] error: removing predicates from subscriber list');
+                                console.log('[unsubscribe-predicates.main] error: removing predicates from subscriber list');
                                 console.log(err);
                                 reject({
                                     result: 'Error occurred deleting predicates from subscriber.'
                                 });
                             }
                             else {
-                                console.log('[unsubscribe.main] error: Predicated successfully removed');
+                                console.log('[unsubscribe-predicates.main] success: Predicated successfully removed');
                                 resolve({
                                     result: 'Success. Predicates successfully deleted.'
                                 });
@@ -80,7 +82,7 @@ function main(params) {
                         });
                     }
                     else {
-                        console.log('[unsubscribe.main] error: subscriber does not exist');
+                        console.log('[unsubscribe-predicates.main] error: subscriber does not exist');
                         reject({
                             result: 'Error subscriber does not exit.'
                         });

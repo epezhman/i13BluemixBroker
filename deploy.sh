@@ -41,7 +41,7 @@ function install() {
 
   echo "Creating Actions"
   wsk action create pubsub/publish actions/publish.js --web true
-  wsk action create pubsub/last_read actions/last-read-subscriber.js
+  wsk action create pubsub/last_read actions/last-read-subscriber.js --web true
   wsk action create pubsub/subscribe actions/subscribe.js --web true
   wsk action create pubsub/unsubscribe actions/unsubscribe.js --web true
   wsk action create pubsub/get_sub_topics actions/get-subscribed-topics.js --web true
@@ -86,6 +86,7 @@ function install() {
   wsk api create -n "Subscribe" /pubsub /subscribe post pubsub/subscribe --response-type json
   wsk api create -n "Unsubscribe" /pubsub /unsubscribe post pubsub/unsubscribe --response-type json
   wsk api create -n "GetSubscribedTopics" /pubsub /get_subscribed_topics get pubsub/get_sub_topics --response-type json
+  wsk api create -n "SubscribeLastRead" /pubsub /last_read get pubsub/last_read --response-type json
   wsk api create -n "GetSubscribedMessages" /pubsub /get_subscribed_messages get pubsub/get_sub_messages --response-type json
   wsk api create -n "RegisterSubscriber" /pubsub /register_subscriber get pubsub/register_subscriber --response-type json
   wsk api create -n "PublishStateless" /pubsub /publish_stateless post pubsub/publish_stateless --response-type json
