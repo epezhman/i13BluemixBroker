@@ -20,34 +20,40 @@ function main(params) {
             password: params.CLOUDANT_PASSWORD
         });
         const ows = openwhisk();
-        console.log(params.predicates);
-        console.log(Object.keys(params.predicates));
+        let predicates = JSON.parse(params.predicates);
+        console.log(predicates)
+        resolve({
+            result: 'Success. Predicates successfully deleted.'
+        });
         ows.actions.invoke({
             name: "pubsub/unsubscribe_predicates",
             blocking: true,
             result: true,
             params: {
                 subscriber_id: params.subscriber_id,
-                predicates: params.predicates
+                predicates: predicates
             }
         }).then(result => {
                 console.log('[subscribe-predicates.main] success: All subscribed predicates');
-                addSubscriberToPredicates(cloudant, params, resolve, reject);
+                resolve({
+                    result: 'Success. Predicates successfully deleted.'
+                });
+                //addSubscriberToPredicates(cloudant, params, predicates, resolve, reject);
             }
         ).catch(err => {
                 console.log('[subscribe-predicates.main] error: could NOT remove the predicates');
                 resolve({
-                    result: 'Success. Subscriptions inserted.'
+                    result: 'Error. could remove insert the subscription..'
                 });
             }
         );
     });
 }
 
-function addSubscriberToPredicates(cloudant, params, resolve, reject) {
+function addSubscriberToPredicates(cloudant, params, predicates, resolve, reject) {
     const subscribed_predicates = cloudant.db.use('subscribed_predicates');
-    eachSeries(params.predicates, (predicate, mcb) => {
-        if (params.predicates.hasOwnProperty(predicate)) {
+    eachSeries(predicates, (predicate, mcb) => {
+        if (predicates.hasOwnProperty(predicate)) {
             subscribed_predicates.get(predicate, {revs_info: true}, (err, data) => {
                 if (err) {
                     subscribed_predicates.insert({
@@ -60,7 +66,7 @@ function addSubscriberToPredicates(cloudant, params, resolve, reject) {
                             mcb('[subscribe-predicates.addSubscriberToPredicates] error: error insert subscriber first time')
                         }
                         else {
-                            addPredicatesToSubscriber(cloudant, params.predicates[predicate],
+                            addPredicatesToSubscriber(cloudant, predicates[predicate],
                                 params.subscriber_id, mcb);
                         }
                     });
@@ -76,7 +82,7 @@ function addSubscriberToPredicates(cloudant, params, resolve, reject) {
                             mcb('[subscribe-predicates.addSubscriberToPredicates] error: appending subscriber first time')
                         }
                         else {
-                            addPredicatesToSubscriber(cloudant, params.predicates[predicate],
+                            addPredicatesToSubscriber(cloudant, predicates[predicate],
                                 params.subscriber_id, mcb);
                         }
                     });

@@ -169,6 +169,13 @@ function showEnv() {
   echo -e "${NC}"
 }
 
+function tempUpdate()
+{
+    wsk action update pubsub/unsubscribe_predicates actions/unsubscribe-predicates.js
+  wsk action update pubsub/subscribe_predicates actions/subscribe-predicates.js --web true
+
+}
+
 case "$1" in
 "--install" )
 install
@@ -178,6 +185,9 @@ uninstall
 ;;
 "--reinstall" )
 reinstall
+;;
+"-u" )
+tempUpdate
 ;;
 "--env" )
 showEnv
