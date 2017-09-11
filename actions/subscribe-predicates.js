@@ -37,7 +37,7 @@ function main(params) {
                         name: "pubsub/add_subscribers_to_predicates",
                         params: {
                             subscriber_id: params.subscriber_id,
-                            predicate: predicate
+                            predicate: predicate.toLowerCase()
                         }
                     }).then(result => {
                         pcb();

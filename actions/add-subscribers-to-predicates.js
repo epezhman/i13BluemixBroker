@@ -18,11 +18,12 @@ function main(params) {
             password: params.CLOUDANT_PASSWORD
         });
         const subscribed_predicates = cloudant.db.use('subscribed_predicates');
-        subscribed_predicates.get(params.predicate, {revs_info: true}, (err, data) => {
+        let predicateLower = params.predicate.toLowerCase();
+        subscribed_predicates.get(predicateLower, {revs_info: true}, (err, data) => {
             if (err) {
                 subscribed_predicates.insert({
-                    _id: params.predicate,
-                    subject: params.predicate,
+                    _id: predicateLower,
+                    subject: predicateLower,
                     subscribers: [params.subscriber_id]
                 }, (err, body, head) => {
                     if (err) {

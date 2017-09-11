@@ -28,7 +28,7 @@ function main(params) {
                         result: true,
                         params: {
                             subscriber_id: params.subscriber_id,
-                            predicate: predicate
+                            predicate: predicate.toLowerCase()
                         }
                     }).then(result => {
                         pcb();
