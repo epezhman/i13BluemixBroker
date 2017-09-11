@@ -55,6 +55,9 @@ function install() {
   wsk action create pubsub/cache_content_based_subscribers actions/cache-content-based-subscribers.js
   wsk action create pubsub/unsubscribe_predicates actions/unsubscribe-predicates.js
   wsk action create pubsub/subscribe_predicates actions/subscribe-predicates.js --web true
+  wsk action create pubsub/add_predicates_to_subscribers actions/add-predicates-to-subscribers.js
+  wsk action create pubsub/add_subscribers_to_predicates actions/add-subscribers-to-predicates.js
+  wsk action create pubsub/remove_subscribers_from_predicates actions/remove-subscribers-from-predicates.js
 
   wsk action create pubsub/broker actions/broker.js \
   --param "WATSON_IOT_ORG" $WATSON_IOT_ORG \
@@ -126,6 +129,9 @@ function uninstall() {
   wsk action delete pubsub/perform_content_based_matching_forward_message
   wsk action delete pubsub/unsubscribe_predicates
   wsk action delete pubsub/subscribe_predicates
+  wsk action delete pubsub/add_predicates_to_subscribers
+  wsk action delete pubsub/add_subscribers_to_predicates
+  wsk action delete pubsub/remove_subscribers_from_predicates
 
   echo "Removing Sequences"
   wsk action delete pubsub/broker-sequence
@@ -171,9 +177,11 @@ function showEnv() {
 
 function tempUpdate()
 {
-    wsk action update pubsub/unsubscribe_predicates actions/unsubscribe-predicates.js
+  wsk action update pubsub/unsubscribe_predicates actions/unsubscribe-predicates.js
   wsk action update pubsub/subscribe_predicates actions/subscribe-predicates.js --web true
-
+  wsk action update pubsub/add_predicates_to_subscribers actions/add-predicates-to-subscribers.js
+  wsk action update pubsub/add_subscribers_to_predicates actions/add-subscribers-to-predicates.js
+  wsk action update pubsub/remove_subscribers_from_predicates actions/remove-subscribers-from-predicates.js
 }
 
 case "$1" in
