@@ -75,7 +75,7 @@ function main(params) {
                         "fields": [
                             "topic",
                             "message",
-                            "time"
+                            "timestamp"
                         ]
                     }, (err, result) => {
                         if (!err) {
