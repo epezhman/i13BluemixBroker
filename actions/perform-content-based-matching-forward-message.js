@@ -19,84 +19,101 @@ const requestPromise = require('request-promise');
 
 function main(params) {
     return new Promise((resolve, reject) => {
-        if (Object.keys(params.predicates).length) {
-            let accepted = false;
-            for (let predicate in params.subscriber_predicates) {
-                if (params.subscriber_predicates.hasOwnProperty(predicate)
-                    && params.predicates.hasOwnProperty(predicate)) {
-                    let operator = params.subscriber_predicates[predicate]['operator'];
-                    if (operator === '>=' || operator === '>' || operator === '<' || operator === '<=') {
-                        let publicationVal = parseFloat(params.predicates[predicate]['val']);
-                        let subscriberVal = parseFloat(params.subscriber_predicates[predicate]['val']);
-                        if (isNaN(publicationVal) || isNaN(subscriberVal)) {
-                            accepted = false;
-                            break;
-                        }
-                        else {
-                            if (operator === '>=') {
-                                if (subscriberVal >= subscriberVal) {
-                                    accepted = true;
-                                }
-                                else {
-                                    accepted = false;
-                                    break;
-                                }
+        try {
+            if (Object.keys(params.predicates).length) {
+                let accepted = false;
+                for (let predicate in params.subscriber_predicates) {
+                    if (params.subscriber_predicates.hasOwnProperty(predicate)
+                        && params.predicates.hasOwnProperty(predicate.toLowerCase())) {
+                        let operator = params.subscriber_predicates[predicate]['operator'];
+                        if (operator === '>=' || operator === '>' || operator === '<' || operator === '<=') {
+                            let publicationVal = parseFloat(params.predicates[predicate]);
+                            let subscriberVal = parseFloat(params.subscriber_predicates[predicate]['value']);
+                            if (isNaN(publicationVal) || isNaN(subscriberVal)) {
+                                accepted = false;
+                                break;
+                            }
+                            else {
+                                if (operator === '>=') {
+                                    if (subscriberVal >= subscriberVal) {
+                                        accepted = true;
+                                    }
+                                    else {
+                                        accepted = false;
+                                        break;
+                                    }
 
-                            } else if (operator === '>') {
-                                if (publicationVal > subscriberVal) {
-                                    accepted = true;
-                                }
-                                else {
-                                    accepted = false;
-                                    break;
-                                }
+                                } else if (operator === '>') {
+                                    if (publicationVal > subscriberVal) {
+                                        accepted = true;
+                                    }
+                                    else {
+                                        accepted = false;
+                                        break;
+                                    }
 
-                            } else if (operator === '<') {
-                                if (publicationVal < subscriberVal) {
-                                    accepted = true;
-                                }
-                                else {
-                                    accepted = false;
-                                    break;
-                                }
+                                } else if (operator === '<') {
+                                    if (publicationVal < subscriberVal) {
+                                        accepted = true;
+                                    }
+                                    else {
+                                        accepted = false;
+                                        break;
+                                    }
 
-                            } else if (operator === '<=') {
-                                if (publicationVal <= subscriberVal) {
-                                    accepted = true;
-                                }
-                                else {
-                                    accepted = false;
-                                    break;
+                                } else if (operator === '<=') {
+                                    if (publicationVal <= subscriberVal) {
+                                        accepted = true;
+                                    }
+                                    else {
+                                        accepted = false;
+                                        break;
+                                    }
                                 }
                             }
-                        }
-                    } else if (operator === '=') {
-                        let publicationVal = params.predicates[predicate]['val'].toString();
-                        let subscriberVal = params.subscriber_predicates[predicate]['val'].toString();
-                        if (publicationVal === subscriberVal) {
-                            accepted = true;
-                        }
-                        else {
-                            accepted = false;
-                            break;
+                        } else if (operator === '=') {
+                            let publicationVal = params.predicates[predicate].toString();
+                            let subscriberVal = params.subscriber_predicates[predicate]['value'].toString();
+                            if (publicationVal.toLowerCase() === subscriberVal.toLowerCase()) {
+                                accepted = true;
+                            }
+                            else {
+                                accepted = false;
+                                break;
+                            }
                         }
                     }
+                    else {
+                        accepted = false;
+                        break;
+                    }
+                }
+                if (accepted) {
+                    console.log(`[perform-content-based-matching-forward-message.main] success: forwarded to watson`);
+                    sendToWatson(params, resolve, reject)
                 }
                 else {
-                    accepted = false;
-                    break;
+                    console.log(`[perform-content-based-matching-forward-message.main] error: the predicates did not match`);
+                    reject({
+                        result: "Error, did not match."
+                    });
                 }
             }
-            if (accepted) {
-                sendToWatson(params, resolve, reject)
+            else {
+                console.log(`[perform-content-based-matching-forward-message.main] error: subscriber has no predicates`);
+                reject({
+                    result: "Error, the subscriber has no predicates"
+                });
             }
         }
-        else {
+        catch (err) {
+            console.log(err);
             reject({
-                result: "Error, the subscriber has no predicates"
+                result: "Error, Look into trace"
             });
         }
     });
+
 }
 
 function sendToWatson(params, resolve, reject) {
@@ -117,13 +134,13 @@ function sendToWatson(params, resolve, reject) {
     };
     requestPromise(req_options)
         .then(function (parsedBody) {
-            console.log(`[forward-content-based-publication.main] success: Message sent to Watson`);
+            console.log(`[perform-content-based-matching-forward-message.sendToWatson] success: Message sent to Watson`);
             resolve({
                 result: 'Success. Message Sent to Watson.'
             });
         })
         .catch(function (err) {
-            console.log(`[forward-content-based-publication.main] error: Message could not be sent to ${params.subscriber_id}`);
+            console.log(`[perform-content-based-matching-forward-message.sendToWatson] error: Message could not be sent to ${params.subscriber_id}`);
             console.log(err);
             reject({
                 result: 'Error. Message could not be sent to Watson.'

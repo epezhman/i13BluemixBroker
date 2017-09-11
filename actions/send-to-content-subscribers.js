@@ -34,13 +34,13 @@ function main(params) {
             const subscribed_predicates = cloudant.db.use('subscribed_predicates');
             subscribed_predicates.get(params.first_predicate, (err, result) => {
                 if (!err) {
-                    console.log('[send-to-content-subscribers.main] success: got the subscribed topics');
+                    console.log('[send-to-content-subscribers.main] success: got the subscribed predicates');
                     last_checked_contents[params.first_predicate] = Date.now();
                     subscribers[params.first_predicate] = result['subscribers'];
                     forwardPublications(params, Date.now(), resolve, reject)
                 }
                 else {
-                    console.log('[send-to-content-subscribers.main] error: cloud not get the subscribed topics');
+                    console.log('[send-to-content-subscribers.main] error: could not get the subscribed predicates');
                 }
             });
         }
@@ -59,14 +59,12 @@ function forwardPublications(params, time, resolve, reject) {
                 subscriber_id: sub_id
             }
         }).then(result => {
-                console.log('[send-to-content-subscribers.forwardPublications] success: forwarded to watson action');
-                callback();
-            }
-        ).catch(err => {
-                console.log('[send-to-content-subscribers.forwardPublications] error: could NOT forward the topic watson action');
-                callback(err);
-            }
-        );
+            console.log('[send-to-content-subscribers.forwardPublications] success: forwarded to watson action');
+            callback();
+        }).catch(err => {
+            console.log('[send-to-content-subscribers.forwardPublications] error: could NOT forward the topic watson action');
+            callback();
+        });
     }, function (err) {
         if (err) {
             console.log('[send-to-content-subscribers.forwardPublications] error: Error in forwarding the publications');

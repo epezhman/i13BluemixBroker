@@ -13,19 +13,20 @@ const openwhisk = require('openwhisk');
 function main(params) {
     return new Promise((resolve, reject) => {
         const ows = openwhisk();
+        let predicates = JSON.parse(params.predicates);
         let firstPredicate = null;
-        for (let predicate in params.predicates) {
-            if (params.predicates.hasOwnProperty(predicate)) {
+        for (let predicate in predicates) {
+            if (predicates.hasOwnProperty(predicate)) {
                 firstPredicate = predicate;
                 break;
             }
         }
-        if (firstPredicate) {
+        if (firstPredicate && firstPredicate.length) {
             ows.actions.invoke({
                 name: "pubsub/send_to_content_subscribers",
                 params: {
-                    first_predicate: firstPredicate,
-                    predicates: params.predicates,
+                    first_predicate: firstPredicate.toLowerCase(),
+                    predicates: predicates,
                     message: params.message
                 }
             }).then(result => {
@@ -42,8 +43,7 @@ function main(params) {
                 }
             );
         }
-        else
-        {
+        else {
             reject({
                 result: 'Error, no content predicate found.'
             });

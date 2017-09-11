@@ -1,4 +1,5 @@
 const openwhisk = require('openwhisk');
+const Cloudant = require('cloudant');
 
 let subscribers = {};
 let last_checked_subscribers_contents = {};
@@ -26,6 +27,12 @@ function main(params) {
             if (Object.keys(subscribers[params.subscriber_id]).length) {
                 forwardPublications(params, Date.now(), resolve, reject)
             }
+            else {
+                console.log('[cache-content-based-subscribers.main] error: does not have any predicates');
+                reject({
+                    result: "Does not have any predicates"
+                })
+            }
         }
         else {
             const cloudant = new Cloudant({
@@ -41,9 +48,18 @@ function main(params) {
                     if (Object.keys(subscribers[params.subscriber_id]).length) {
                         forwardPublications(params, Date.now(), resolve, reject)
                     }
+                    else {
+                        console.log('[cache-content-based-subscribers.main] error: does not have any predicates');
+                        reject({
+                            result: "Does not have any predicates"
+                        })
+                    }
                 }
                 else {
                     console.log('[cache-content-based-subscribers.main] error: cloud not get the subscribed topics');
+                    reject({
+                        result: "Error could not get the topics"
+                    })
                 }
             });
         }

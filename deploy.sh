@@ -9,7 +9,7 @@ NC='\033[0m'
 source local.env
 
 function usage() {
-  echo -e "${YELLOW}Usage: $0 [--install,--uninstall,--reinstall,--env]${NC}"
+  echo -e "${YELLOW}Usage: $0 [--install,--uninstall,--update,--reinstall,--env]${NC}"
 }
 
 function install() {
@@ -175,13 +175,44 @@ function showEnv() {
   echo -e "${NC}"
 }
 
-function tempUpdate()
+function updateActions()
 {
+  wsk action update pubsub/publish actions/publish.js --web true
+  wsk action update pubsub/last_read actions/last-read-subscriber.js --web true
+  wsk action update pubsub/subscribe actions/subscribe.js --web true
+  wsk action update pubsub/unsubscribe actions/unsubscribe.js --web true
+  wsk action update pubsub/get_sub_topics actions/get-subscribed-topics.js --web true
+  wsk action update pubsub/get_sub_messages actions/get-subscribed-messages.js --web true
+  wsk action update pubsub/register_subscriber actions/register-subscriber.js --web true
+  wsk action update pubsub/publish_stateless actions/publish-stateless.js --web true
+  wsk action update pubsub/send_to_topic_subscribers actions/send-to-topic-subscribers.js
+  wsk action update pubsub/backup_message actions/backup-message.js
+  wsk action update pubsub/publish_content_based_stateless actions/publish-content-based-stateless.js --web true
+  wsk action update pubsub/send_to_content_subscribers actions/send-to-content-subscribers.js
+  wsk action update pubsub/cache_content_based_subscribers actions/cache-content-based-subscribers.js
   wsk action update pubsub/unsubscribe_predicates actions/unsubscribe-predicates.js
   wsk action update pubsub/subscribe_predicates actions/subscribe-predicates.js --web true
   wsk action update pubsub/add_predicates_to_subscribers actions/add-predicates-to-subscribers.js
   wsk action update pubsub/add_subscribers_to_predicates actions/add-subscribers-to-predicates.js
   wsk action update pubsub/remove_subscribers_from_predicates actions/remove-subscribers-from-predicates.js
+
+  wsk action update pubsub/broker actions/broker.js \
+  --param "WATSON_IOT_ORG" $WATSON_IOT_ORG \
+  --param "WATSON_IOT_APPLICATION_TYPE" $WATSON_IOT_APPLICATION_TYPE \
+  --param "WATSON_IOT_API_USERNAME" $WATSON_IOT_API_USERNAME \
+  --param "WATSON_IOT_API_PASSWORD" $WATSON_IOT_API_PASSWORD
+
+  wsk action update pubsub/forward_publication actions/forward-publication.js \
+  --param "WATSON_IOT_ORG" $WATSON_IOT_ORG \
+  --param "WATSON_IOT_APPLICATION_TYPE" $WATSON_IOT_APPLICATION_TYPE \
+  --param "WATSON_IOT_API_USERNAME" $WATSON_IOT_API_USERNAME \
+  --param "WATSON_IOT_API_PASSWORD" $WATSON_IOT_API_PASSWORD
+
+  wsk action update pubsub/perform_content_based_matching_forward_message actions/perform-content-based-matching-forward-message.js \
+  --param "WATSON_IOT_ORG" $WATSON_IOT_ORG \
+  --param "WATSON_IOT_APPLICATION_TYPE" $WATSON_IOT_APPLICATION_TYPE \
+  --param "WATSON_IOT_API_USERNAME" $WATSON_IOT_API_USERNAME \
+  --param "WATSON_IOT_API_PASSWORD" $WATSON_IOT_API_PASSWORD
 }
 
 case "$1" in
@@ -194,8 +225,8 @@ uninstall
 "--reinstall" )
 reinstall
 ;;
-"-u" )
-tempUpdate
+"--update" )
+updateActions
 ;;
 "--env" )
 showEnv
