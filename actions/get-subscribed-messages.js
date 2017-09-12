@@ -128,12 +128,9 @@ function getLastRead(cloudant, subscriber_id) {
             }
             else {
                 let old_timestamp = data.timestamp;
-                sub_logs.insert({
-                    _id: data._id,
-                    _rev: data._rev,
-                    time: time,
-                    timestamp: timestamp
-                }, (err, body, head) => {
+                data.time = time;
+                data.timestamp = timestamp;
+                sub_logs.insert(data, (err, body, head) => {
                     if (err) {
                         console.log('[get-subscribed-messages.get-last-read] error: error updating subscriber log');
                         console.log(err);

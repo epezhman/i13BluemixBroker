@@ -39,11 +39,8 @@ function main(params) {
                         });
                     }
                     else {
-                        subscribed_topics.insert({
-                            _id: data._id,
-                            _rev: data._rev,
-                            subscribers: array.union(data.subscribers, [params.subscriber_id])
-                        }, (err, body, head) => {
+                        data.subscribers = array.union(data.subscribers, [params.subscriber_id])
+                        subscribed_topics.insert(data, (err, body, head) => {
                             if (err) {
                                 console.log(err);
                                 mcb('[subscribe.main] error: appending subscriber first time')
@@ -76,14 +73,8 @@ function addTopicToSubscriber(cloudant, topic, subscriber_id, mcb) {
     const subscribers = cloudant.db.use('subscribers');
     subscribers.get(subscriber_id, {revs_info: true}, (err, data) => {
         if (!err) {
-            subscribers.insert({
-                _id: data._id,
-                _rev: data._rev,
-                topics: data.hasOwnProperty('topics') ? array.union(data.topics, [topic]) : [topic],
-                predicates: data.hasOwnProperty('predicates') ? data.predicates : [],
-                time: data.time,
-                timestamp: data.timestamp
-            }, (err, body, head) => {
+            data.topics = data.hasOwnProperty('topics') ? array.union(data.topics, [topic]) : [topic];
+            subscribers.insert(data, (err, body, head) => {
                 if (err) {
                     console.log(err);
                     mcb('[subscribe.main] error: appending topics to subscribers list')

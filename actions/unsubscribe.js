@@ -24,13 +24,10 @@ function main(params) {
             if (topic.length) {
                 subscribed_topics.get(topic, {revs_info: true}, (err, data) => {
                     if (!err) {
-                        subscribed_topics.insert({
-                            _id: data._id,
-                            _rev: data._rev,
-                            subscribers: array.remove(data.subscribers, function (_sub_id) {
-                                return _sub_id !== params.subscriber_id
-                            })
-                        }, (err, body, head) => {
+                        data.subscribers = array.remove(data.subscribers, function (_sub_id) {
+                            return _sub_id !== params.subscriber_id
+                        });
+                        subscribed_topics.insert(data, (err, body, head) => {
                             if (err) {
                                 console.log(err);
                                 mcb('[unsubscribe.main] error: removing subscriber from topics list')
@@ -66,16 +63,10 @@ function removeTopicToSubscriber(cloudant, topic, subscriber_id, mcb) {
     const subscribers = cloudant.db.use('subscribers');
     subscribers.get(subscriber_id, {revs_info: true}, (err, data) => {
         if (!err) {
-            subscribers.insert({
-                _id: data._id,
-                _rev: data._rev,
-                topics: data.hasOwnProperty('topics') ? array.remove(data.topics, function (_topic) {
-                    return _topic !== topic
-                }) : [],
-                predicates: data.hasOwnProperty('predicates') ? data.predicates : [],
-                time: data.time,
-                timestamp: data.timestamp
-            }, (err, body, head) => {
+            data.topics = data.hasOwnProperty('topics') ? array.remove(data.topics, function (_topic) {
+                return _topic !== topic
+            }) : [];
+            subscribers.insert(data, (err, body, head) => {
                 if (err) {
                     console.log(err);
                     mcb('[unsubscribe.removeTopicToSubscriber] error: removing topics from subscribers list')
