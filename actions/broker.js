@@ -43,6 +43,7 @@ function main(params) {
                         callback()
                     }).catch(function (err) {
                         console.log(`[broker.main] error: Message could not be sent to ${sub_id}`);
+                        console.log(err);
                         callback()
                     });
 
