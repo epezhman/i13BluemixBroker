@@ -56,7 +56,8 @@ function main(params) {
                     }
                 }
                 else {
-                    console.log('[cache-content-based-subscribers.main] error: cloud not get the subscribed topics');
+                    console.log('[cache-content-based-subscribers.main] error: could not get the subscribed topics');
+                    console.log(err);
                     reject({
                         result: "Error could not get the topics"
                     })

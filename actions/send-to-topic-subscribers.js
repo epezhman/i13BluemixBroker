@@ -39,7 +39,7 @@ function main(params) {
                     forwardPublications(params.topic, params.message, Date.now(), resolve, reject)
                 }
                 else {
-                    console.log('[send-to-topic-subscribers.main] error: cloud not get the subscribed topics');
+                    console.log('[send-to-topic-subscribers.main] error: could not get the subscribed topics');
                 }
             });
         }
