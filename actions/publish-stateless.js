@@ -17,7 +17,7 @@ function main(params) {
         const ows = openwhisk();
         each(params.topics.split(','), (topic, callback) => {
             topic = topic.trim();
-            if (params.polling_supported && params.polling_supported === "true") {
+            if (params.polling_supported && (params.polling_supported === "true" || params.polling_supported === true)) {
                 ows.actions.invoke({
                     name: "pubsub/backup_message",
                     params: {
