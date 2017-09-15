@@ -14,9 +14,13 @@ function main(params) {
     return new Promise((resolve, reject) => {
         const ows = openwhisk();
         let predicates = JSON.parse(params.predicates);
+        let orderedPredicates = {};
+        Object.keys(predicates).sort().forEach(function(key) {
+            orderedPredicates[key] = predicates[key];
+        });
         let firstPredicate = null;
-        for (let predicate in predicates) {
-            if (predicates.hasOwnProperty(predicate)) {
+        for (let predicate in orderedPredicates) {
+            if (orderedPredicates.hasOwnProperty(predicate)) {
                 firstPredicate = predicate;
                 break;
             }
@@ -26,7 +30,7 @@ function main(params) {
                 name: "pubsub/send_to_content_subscribers",
                 params: {
                     first_predicate: firstPredicate.toLowerCase(),
-                    predicates: predicates,
+                    predicates: orderedPredicates,
                     message: params.message
                 }
             }).then(result => {
