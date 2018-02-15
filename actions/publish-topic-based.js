@@ -37,13 +37,13 @@ function main(params) {
             }
         }, (err) => {
             if (err) {
-                console.log('[publish.main] error: message not insert');
+                console.log('[publish-topic-based.main] error: message not insert');
                 console.log(err);
                 reject({
                     result: 'Error occurred inserting the message.'
                 });
             } else {
-                console.log('[publish.main] success: message insert');
+                console.log('[publish-topic-based.main] success: message insert');
                 resolve({
                     result: 'Success. Topic Message inserted.'
                 });

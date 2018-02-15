@@ -40,7 +40,7 @@ function install() {
     --param dbname "$CLOUDANT_PUBLISHED_MESSAGES_DATABASE"
 
   echo "Creating Actions"
-  wsk action create pubsub/publish actions/publish.js --web true
+  wsk action create pubsub/publish_topic_based actions/publish-topic-based.js --web true
   wsk action create pubsub/last_read actions/last-read-subscriber.js --web true
   wsk action create pubsub/subscribe actions/subscribe.js --web true
   wsk action create pubsub/unsubscribe actions/unsubscribe.js --web true
@@ -83,6 +83,12 @@ function install() {
   --param "WATSON_IOT_API_USERNAME" $WATSON_IOT_API_USERNAME \
   --param "WATSON_IOT_API_PASSWORD" $WATSON_IOT_API_PASSWORD
 
+  wsk action create pubsub/do_function_matching_and_forward_if_match actions/do-function-matching-and-forward-if-match.js \
+  --param "WATSON_IOT_ORG" $WATSON_IOT_ORG \
+  --param "WATSON_IOT_APPLICATION_TYPE" $WATSON_IOT_APPLICATION_TYPE \
+  --param "WATSON_IOT_API_USERNAME" $WATSON_IOT_API_USERNAME \
+  --param "WATSON_IOT_API_PASSWORD" $WATSON_IOT_API_PASSWORD
+
   echo "Creating sequence that ties published message read to broker action"
   wsk action create pubsub/broker-sequence \
     --sequence /_/$CLOUDANT_INSTANCE/read,pubsub/broker
@@ -91,7 +97,7 @@ function install() {
   wsk rule create broker-rule message-published pubsub/broker-sequence
 
   echo "Creating API"
-  wsk api create -n "Publish" /pubsub /publish post pubsub/publish --response-type json
+  wsk api create -n "PublishTopicBased" /pubsub /publish_topic_based post pubsub/publish_topic_based --response-type json
   wsk api create -n "Subscribe" /pubsub /subscribe post pubsub/subscribe --response-type json
   wsk api create -n "Unsubscribe" /pubsub /unsubscribe post pubsub/unsubscribe --response-type json
   wsk api create -n "GetSubscribedTopics" /pubsub /get_subscribed_topics get pubsub/get_sub_topics --response-type json
@@ -122,7 +128,7 @@ function uninstall() {
   wsk trigger delete message-published
 
   echo "Removing Actions"
-  wsk action delete pubsub/publish
+  wsk action delete pubsub/publish_topic_based
   wsk action delete pubsub/last_read
   wsk action delete pubsub/subscribe
   wsk action delete pubsub/unsubscribe
@@ -148,6 +154,8 @@ function uninstall() {
   wsk action delete pubsub/subscribe_functions
   wsk action delete pubsub/unsubscribe_functions
   wsk action delete pubsub/bulk_subscribe_function
+  wsk action delete pubsub/do_function_matching_and_forward_if_match
+
 
   echo "Removing Sequences"
   wsk action delete pubsub/broker-sequence
@@ -193,7 +201,7 @@ function showEnv() {
 
 function updateActions()
 {
-  wsk action update pubsub/publish actions/publish.js --web true
+  wsk action update pubsub/publish_topic_based actions/publish-topic-based.js --web true
   wsk action update pubsub/last_read actions/last-read-subscriber.js --web true
   wsk action update pubsub/subscribe actions/subscribe.js --web true
   wsk action update pubsub/unsubscribe actions/unsubscribe.js --web true
@@ -234,6 +242,13 @@ function updateActions()
   --param "WATSON_IOT_APPLICATION_TYPE" $WATSON_IOT_APPLICATION_TYPE \
   --param "WATSON_IOT_API_USERNAME" $WATSON_IOT_API_USERNAME \
   --param "WATSON_IOT_API_PASSWORD" $WATSON_IOT_API_PASSWORD
+
+  wsk action update pubsub/do_function_matching_and_forward_if_match actions/do-function-matching-and-forward-if-match.js \
+  --param "WATSON_IOT_ORG" $WATSON_IOT_ORG \
+  --param "WATSON_IOT_APPLICATION_TYPE" $WATSON_IOT_APPLICATION_TYPE \
+  --param "WATSON_IOT_API_USERNAME" $WATSON_IOT_API_USERNAME \
+  --param "WATSON_IOT_API_PASSWORD" $WATSON_IOT_API_PASSWORD
+
 }
 
 case "$1" in

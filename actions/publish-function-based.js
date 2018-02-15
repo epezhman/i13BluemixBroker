@@ -7,7 +7,7 @@ let last_checked_sub_types = {};
 const stale_time_ms = 1000;
 
 /**
- * 1.   It receives a message and its topics from the publisher and forwards to the next action
+ * 1.   It receives a message and its subscription type from the publisher and forwards to the next action
  *
  * @param   params.sub_type              The topics of the message
  * @param   params.message             The body of the published message
@@ -30,11 +30,11 @@ function main(params) {
                 account: params.CLOUDANT_USERNAME,
                 password: params.CLOUDANT_PASSWORD
             });
-            const subscribed_method_types = cloudant.db.use('subscribed_method_types');
-            subscribed_method_types.get(params.topic, (err, result) => {
+            const subscribed_functions = cloudant.db.use('subscribed_functions');
+            subscribed_functions.get(params.sub_type, (err, result) => {
                 if (!err) {
                     console.log('[publish-function-based.main] success: got the subscribed types');
-                    subscribed_method_types[params.sub_type] = Date.now();
+                    last_checked_sub_types[params.sub_type] = Date.now();
                     subscribers[params.sub_type] = result['subscribers'];
                     forwardPublicationForMatching(params.sub_type, params.message, Date.now(), resolve, reject)
                 }
@@ -48,14 +48,16 @@ function main(params) {
 
 function forwardPublicationForMatching(sub_type, message, time, resolve, reject) {
     const ows = openwhisk();
-    each(subscribers[sub_type], function (sub_id, callback) {
+    each(subscribers[sub_type], function (sub_info, callback) {
         ows.actions.invoke({
-            name: "pubsub/forward_publication",
+            name: "pubsub/do_function_matching_and_forward_if_match",
             params: {
                 sub_type: sub_type,
                 message: message,
                 time: time,
-                subscriber_id: sub_id
+                subscriber_id: sub_info['subscriber_id'],
+                matching_input :sub_info['matching_input'],
+                matching_function :sub_info['matching_function']
             }
         }).then(result => {
                 console.log('[publish-function-based.forwardPublicationForMatching] success: forwarded the publication for matching.');
