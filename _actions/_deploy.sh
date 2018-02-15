@@ -6,7 +6,7 @@ YELLOW='\033[0;33m'
 GREEN='\033[0;32m'
 NC='\033[0m'
 
-source local.env
+source ../local.env
 
 function usage() {
   echo -e "${YELLOW}Usage: $0 [--install,--uninstall,--reinstall,--env]${NC}"

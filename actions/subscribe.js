@@ -39,7 +39,7 @@ function main(params) {
                         });
                     }
                     else {
-                        data.subscribers = array.union(data.subscribers, [params.subscriber_id])
+                        data.subscribers = array.union(data.subscribers, [params.subscriber_id]);
                         subscribed_topics.insert(data, (err, body, head) => {
                             if (err) {
                                 console.log(err);

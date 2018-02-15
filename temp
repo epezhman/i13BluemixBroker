@@ -1,0 +1,7 @@
+ {
+     "sub_type": "first",
+     "matching_input":["a", "b", "c"],
+     "matching_function":"return a + b + c",
+     "subscriber_id":"4325ac00-916b-11e7-9164-6fa6d53f07d3"
+ }
+
