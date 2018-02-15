@@ -62,6 +62,8 @@ function install() {
   wsk action create pubsub/bulk_subscribe actions/bulk-subscribe.js --web true
   wsk action create pubsub/subscribe_functions actions/subscribe-functions.js --web true
   wsk action create pubsub/unsubscribe_functions actions/unsubscribe-functions.js --web true
+  wsk action create pubsub/bulk_subscribe_function actions/bulk-subscribe-function.js --web true
+
 
   wsk action create pubsub/broker actions/broker.js \
   --param "WATSON_IOT_ORG" $WATSON_IOT_ORG \
@@ -103,7 +105,7 @@ function install() {
   wsk api create -n "BulkSubscribe" /pubsub /bulk_subscribe post pubsub/bulk_subscribe --response-type json
   wsk api create -n "SubscribeFunction" /pubsub /subscribe_functions post pubsub/subscribe_functions --response-type json
   wsk api create -n "UnsubscribeFunction" /pubsub /unsubscribe_functions post pubsub/unsubscribe_functions --response-type json
-
+  wsk api create -n "BulkSubscribeFunctions" /pubsub /bulk_subscribe_function post pubsub/bulk_subscribe_function --response-type json
 
   echo -e "${GREEN}Install Complete${NC}"
 }
@@ -145,6 +147,7 @@ function uninstall() {
   wsk action delete pubsub/bulk_subscribe
   wsk action delete pubsub/subscribe_functions
   wsk action delete pubsub/unsubscribe_functions
+  wsk action delete pubsub/bulk_subscribe_function
 
   echo "Removing Sequences"
   wsk action delete pubsub/broker-sequence
@@ -210,11 +213,9 @@ function updateActions()
   wsk action update pubsub/remove_subscribers_from_predicates actions/remove-subscribers-from-predicates.js
   wsk action update pubsub/bulk_subscribe_predicates actions/bulk-subscribe-predicates.js --web true
   wsk action update pubsub/bulk_subscribe actions/bulk-subscribe.js --web true
-  wsk action update pubsub/bulk_subscribe_predicates actions/bulk-subscribe-predicates.js --web true
-  wsk action update pubsub/bulk_subscribe actions/bulk-subscribe.js --web true
   wsk action update pubsub/subscribe_functions actions/subscribe-functions.js --web true
   wsk action update pubsub/unsubscribe_functions actions/unsubscribe-functions.js --web true
-
+  wsk action update pubsub/bulk_subscribe_function actions/bulk-subscribe-function.js --web true
 
   wsk action update pubsub/broker actions/broker.js \
   --param "WATSON_IOT_ORG" $WATSON_IOT_ORG \
