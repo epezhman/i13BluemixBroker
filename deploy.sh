@@ -63,7 +63,7 @@ function install() {
   wsk action create pubsub/subscribe_functions actions/subscribe-functions.js --web true
   wsk action create pubsub/unsubscribe_functions actions/unsubscribe-functions.js --web true
   wsk action create pubsub/bulk_subscribe_function actions/bulk-subscribe-function.js --web true
-
+  wsk action create pubsub/publish_function_based actions/publish-function-based.js --web true
 
   wsk action create pubsub/broker actions/broker.js \
   --param "WATSON_IOT_ORG" $WATSON_IOT_ORG \
@@ -112,6 +112,7 @@ function install() {
   wsk api create -n "SubscribeFunction" /pubsub /subscribe_functions post pubsub/subscribe_functions --response-type json
   wsk api create -n "UnsubscribeFunction" /pubsub /unsubscribe_functions post pubsub/unsubscribe_functions --response-type json
   wsk api create -n "BulkSubscribeFunctions" /pubsub /bulk_subscribe_function post pubsub/bulk_subscribe_function --response-type json
+  wsk api create -n "PublishFunctionBased" /pubsub /publish_function_based post pubsub/publish_function_based --response-type json
 
   echo -e "${GREEN}Install Complete${NC}"
 }
@@ -155,7 +156,7 @@ function uninstall() {
   wsk action delete pubsub/unsubscribe_functions
   wsk action delete pubsub/bulk_subscribe_function
   wsk action delete pubsub/do_function_matching_and_forward_if_match
-
+  wsk action delete pubsub/publish_function_based
 
   echo "Removing Sequences"
   wsk action delete pubsub/broker-sequence
@@ -224,6 +225,7 @@ function updateActions()
   wsk action update pubsub/subscribe_functions actions/subscribe-functions.js --web true
   wsk action update pubsub/unsubscribe_functions actions/unsubscribe-functions.js --web true
   wsk action update pubsub/bulk_subscribe_function actions/bulk-subscribe-function.js --web true
+  wsk action update pubsub/publish_function_based actions/publish-function-based.js --web true
 
   wsk action update pubsub/broker actions/broker.js \
   --param "WATSON_IOT_ORG" $WATSON_IOT_ORG \
