@@ -28,7 +28,7 @@ function main(params) {
                 forwardPublications(params, Date.now(), resolve, reject)
             }
             else {
-                console.log('[cache-content-based-subscribers.main] error: does not have any predicates');
+                console.log('[publish-content-based-3.main] error: does not have any predicates');
                 reject({
                     result: "Does not have any predicates"
                 })
@@ -42,21 +42,21 @@ function main(params) {
             const subscribers_db = cloudant.db.use('subscribers');
             subscribers_db.get(params.subscriber_id, (err, result) => {
                 if (!err) {
-                    console.log('[cache-content-based-subscribers.main] success: got the subscribed topics');
+                    console.log('[publish-content-based-3.main] success: got the subscribed topics');
                     last_checked_subscribers_contents[params.subscriber_id] = Date.now();
                     subscribers[params.subscriber_id] = result.hasOwnProperty('predicates') ? result['predicates'] : [];
                     if (Object.keys(subscribers[params.subscriber_id]).length) {
                         forwardPublications(params, Date.now(), resolve, reject)
                     }
                     else {
-                        console.log('[cache-content-based-subscribers.main] error: does not have any predicates');
+                        console.log('[publish-content-based-3.main] error: does not have any predicates');
                         reject({
                             result: "Does not have any predicates"
                         })
                     }
                 }
                 else {
-                    console.log('[cache-content-based-subscribers.main] error: could not get the subscribed topics');
+                    console.log('[publish-content-based-3.main] error: could not get the subscribed topics');
                     console.log(err);
                     reject({
                         result: "Error could not get the topics"
@@ -70,7 +70,7 @@ function main(params) {
 function forwardPublications(params, time, resolve, reject) {
     const ows = openwhisk();
     ows.actions.invoke({
-        name: "pubsub/perform_content_based_matching_forward_message",
+        name: "pubsub/publish_content_based_4",
         params: {
             predicates: params.predicates,
             message: params.message,
@@ -79,13 +79,13 @@ function forwardPublications(params, time, resolve, reject) {
             subscriber_id: params.subscriber_id
         }
     }).then(result => {
-            console.log('[cache-content-based-subscribers.forwardPublications] success: forwarded to watson action');
+            console.log('[cpublish-content-based-3.forwardPublications] success: forwarded to watson action');
             resolve({
                 result: "Success: publication forwarded for matching."
             })
         }
     ).catch(err => {
-            console.log('[cache-content-based-subscribers.forwardPublications] error: could NOT forward the topic watson action');
+            console.log('[publish-content-based-3.forwardPublications] error: could NOT forward the topic watson action');
             console.log(err);
             reject({
                 result: "Error happened with publications"

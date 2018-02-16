@@ -22,14 +22,14 @@ function main(params) {
                 data.predicates = params.predicates;
                 subscribers.insert(data, (err, body, head) => {
                     if (err) {
-                        console.log('[add-predicates-to-subscribers.main] error: could not add the predicates to subscribers.');
+                        console.log('[subscribe-predicates-add-predicates-to-subscribers.main] error: could not add the predicates to subscribers.');
                         console.log(err);
                         reject({
                             result: 'Error. could not add the predicates to subscribers.'
                         });
                     }
                     else {
-                        console.log('[add-predicates-to-subscribers.main] success: added the predicates to the subscribers.');
+                        console.log('[subscribe-predicates-add-predicates-to-subscribers.main] success: added the predicates to the subscribers.');
                         resolve({
                             result: 'Success. added the predicates to subscribers.'
                         });
@@ -37,7 +37,7 @@ function main(params) {
                 });
             }
             else {
-                console.log('[add-predicates-to-subscribers.main] error: did not find the subscriber.');
+                console.log('[subscribe-predicates-add-predicates-to-subscribers.main] error: did not find the subscriber.');
                 console.log(err);
                 reject({
                     result: 'Error. did not find the subscriber.'

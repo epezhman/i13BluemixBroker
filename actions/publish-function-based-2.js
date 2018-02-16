@@ -46,13 +46,13 @@ function main(params) {
                 };
                 requestPromise(req_options)
                     .then(function (parsedBody) {
-                        console.log(`[do-function-matching-and-forward-if-match.main] success: Message sent to Watson`);
+                        console.log(`[publish-function-based-2.main] success: Message sent to Watson`);
                         resolve({
                             result: 'Success. Message Sent to Watson.'
                         });
                     })
                     .catch(function (err) {
-                        console.log(`[do-function-matching-and-forward-if-match.main] error: Message could not be sent to ${params.subscriber_id}`);
+                        console.log(`[publish-function-based-2.main] error: Message could not be sent to ${params.subscriber_id}`);
                         console.log(err);
                         reject({
                             result: 'Error. Message could not be sent to Watson.'

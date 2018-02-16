@@ -9,7 +9,7 @@ const array = require('lodash/array');
  * @param   params.subscriber_id       Subscriber ID
  * @param   params.CLOUDANT_USERNAME   Cloudant username (set once at action update time)
  * @param   params.CLOUDANT_PASSWORD   Cloudant password (set once at action update time)
- * @return                             Promise OpenWhisk success/error response
+ * @return                             Standard OpenWhisk success/error response
  */
 
 function main(params) {
@@ -23,53 +23,61 @@ function main(params) {
             topic = topic.trim();
             if (topic.length) {
                 subscribed_topics.get(topic, {revs_info: true}, (err, data) => {
-                    if (!err) {
-                        data.subscribers = array.remove(data.subscribers, function (_sub_id) {
-                            return _sub_id !== params.subscriber_id
-                        });
-                        subscribed_topics.insert(data, (err, body, head) => {
+                    if (err) {
+                        subscribed_topics.insert({
+                            _id: topic,
+                            topic: topic,
+                            subscribers: [params.subscriber_id]
+                        }, (err, body, head) => {
                             if (err) {
                                 console.log(err);
-                                mcb('[unsubscribe.main] error: removing subscriber from topics list')
+                                mcb('[subscribe-topics.main] error: error insert subscriber first time')
                             }
                             else {
-                                removeTopicToSubscriber(cloudant, topic, params.subscriber_id, mcb);
+                                addTopicToSubscriber(cloudant, topic, params.subscriber_id, mcb);
                             }
                         });
                     }
                     else {
-                        mcb();
+                        data.subscribers = array.union(data.subscribers, [params.subscriber_id]);
+                        subscribed_topics.insert(data, (err, body, head) => {
+                            if (err) {
+                                console.log(err);
+                                mcb('[subscribe-topics.main] error: appending subscriber first time')
+                            }
+                            else {
+                                addTopicToSubscriber(cloudant, topic, params.subscriber_id, mcb);
+                            }
+                        });
                     }
                 });
             }
         }, (err) => {
             if (err) {
-                console.log('[unsubscribe.main] error: subscription not deleted');
+                console.log('[subscribe-topics.main] error: subscription not inserted');
                 console.log(err);
                 reject({
-                    result: 'Error occurred deleting the subscriptions.'
+                    result: 'Error occurred inserting the subscriptions.'
                 });
             } else {
-                console.log('[unsubscribe.main] success: subscription deleted');
+                console.log('[subscribe-topics.main] success: subscription insert');
                 resolve({
-                    result: 'Success. Subscriptions deleted.'
+                    result: 'Success. Subscriptions inserted.'
                 });
             }
         });
     });
 }
 
-function removeTopicToSubscriber(cloudant, topic, subscriber_id, mcb) {
+function addTopicToSubscriber(cloudant, topic, subscriber_id, mcb) {
     const subscribers = cloudant.db.use('subscribers');
     subscribers.get(subscriber_id, {revs_info: true}, (err, data) => {
         if (!err) {
-            data.topics = data.hasOwnProperty('topics') ? array.remove(data.topics, function (_topic) {
-                return _topic !== topic
-            }) : [];
+            data.topics = data.hasOwnProperty('topics') ? array.union(data.topics, [topic]) : [topic];
             subscribers.insert(data, (err, body, head) => {
                 if (err) {
                     console.log(err);
-                    mcb('[unsubscribe.removeTopicToSubscriber] error: removing topics from subscribers list')
+                    mcb('[subscribe-topics.main] error: appending topics to subscribers list')
                 }
                 else {
                     mcb()
@@ -77,7 +85,7 @@ function removeTopicToSubscriber(cloudant, topic, subscriber_id, mcb) {
             });
         }
         else {
-            mcb('[unsubscribe.removeTopicToSubscriber] error: subscriber does not exist')
+            mcb('[subscribe-topics.main] error: subscriber does not exist')
         }
     });
 }

@@ -30,7 +30,7 @@ function main(params) {
                         subscribed_topics.insert(data, (err, body, head) => {
                             if (err) {
                                 console.log(err);
-                                mcb('[unsubscribe.main] error: removing subscriber from topics list')
+                                mcb('[unsubscribe-topics.main] error: removing subscriber from topics list')
                             }
                             else {
                                 removeTopicToSubscriber(cloudant, topic, params.subscriber_id, mcb);
@@ -44,13 +44,13 @@ function main(params) {
             }
         }, (err) => {
             if (err) {
-                console.log('[unsubscribe.main] error: subscription not deleted');
+                console.log('[unsubscribe-topics.main] error: subscription not deleted');
                 console.log(err);
                 reject({
                     result: 'Error occurred deleting the subscriptions.'
                 });
             } else {
-                console.log('[unsubscribe.main] success: subscription deleted');
+                console.log('[unsubscribe-topics.main] success: subscription deleted');
                 resolve({
                     result: 'Success. Subscriptions deleted.'
                 });
@@ -69,7 +69,7 @@ function removeTopicToSubscriber(cloudant, topic, subscriber_id, mcb) {
             subscribers.insert(data, (err, body, head) => {
                 if (err) {
                     console.log(err);
-                    mcb('[unsubscribe.removeTopicToSubscriber] error: removing topics from subscribers list')
+                    mcb('[unsubscribe-topics.removeTopicToSubscriber] error: removing topics from subscribers list')
                 }
                 else {
                     mcb()
@@ -77,7 +77,7 @@ function removeTopicToSubscriber(cloudant, topic, subscriber_id, mcb) {
             });
         }
         else {
-            mcb('[unsubscribe.removeTopicToSubscriber] error: subscriber does not exist')
+            mcb('[unsubscribe-topics.removeTopicToSubscriber] error: subscriber does not exist')
         }
     });
 }

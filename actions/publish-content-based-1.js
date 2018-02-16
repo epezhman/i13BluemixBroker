@@ -27,20 +27,20 @@ function main(params) {
         }
         if (firstPredicate && firstPredicate.length) {
             ows.actions.invoke({
-                name: "pubsub/send_to_content_subscribers",
+                name: "pubsub/publish_content_based_2",
                 params: {
                     first_predicate: firstPredicate.toLowerCase(),
                     predicates: orderedPredicates,
                     message: params.message
                 }
             }).then(result => {
-                    console.log('[publish-content-based-stateless.main] success: forwarded the contents and message');
+                    console.log('[publish-content-based-1.main] success: forwarded the contents and message');
                     resolve({
                         result: 'Success. Message Published.'
                     });
                 }
             ).catch(err => {
-                    console.log('[publish-content-based-stateless.main] error: could NOT forward the contents');
+                    console.log('[publish-content-based-1.main] error: could NOT forward the contents');
                     reject({
                         result: 'Error occurred publishing the message.'
                     });

@@ -20,7 +20,7 @@ function main(params) {
         const subscribed_predicates = cloudant.db.use('subscribed_predicates');
         subscribed_predicates.get(params.predicate, {revs_info: true}, (err, data) => {
             if (err) {
-                console.log('[remove-subscribers-from-predicates.main] error: could not find the predicate.');
+                console.log('[unsubscribe-predicates-remove-subscribers-from-predicates.main] error: could not find the predicate.');
                 console.log(err);
                 reject({
                     result: 'Error. could not find the predicates'
@@ -32,14 +32,14 @@ function main(params) {
                 });
                 subscribed_predicates.insert(data, (err, body, head) => {
                     if (err) {
-                        console.log('[remove-subscribers-from-predicates.main] error: subscriber NOT removed from predicate.');
+                        console.log('[unsubscribe-predicates-remove-subscribers-from-predicates.main] error: subscriber NOT removed from predicate.');
                         console.log(err);
                         reject({
                             result: 'Error. subscriber NOT removed from predicates'
                         });
                     }
                     else {
-                        console.log('[remove-subscribers-from-predicates.main] success: subscriber removed from predicate.');
+                        console.log('[unsubscribe-predicates-remove-subscribers-from-predicates.main] success: subscriber removed from predicate.');
                         resolve({
                             result: 'Success. subscriber removed from predicates'
                         });

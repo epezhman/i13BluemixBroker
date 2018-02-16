@@ -34,13 +34,13 @@ function main(params) {
             const subscribed_predicates = cloudant.db.use('subscribed_predicates');
             subscribed_predicates.get(params.first_predicate, (err, result) => {
                 if (!err) {
-                    console.log('[send-to-content-subscribers.main] success: got the subscribed predicates');
+                    console.log('[publish-content-based-2.main] success: got the subscribed predicates');
                     last_checked_contents[params.first_predicate] = Date.now();
                     subscribers[params.first_predicate] = result['subscribers'];
                     forwardPublications(params, Date.now(), resolve, reject)
                 }
                 else {
-                    console.log('[send-to-content-subscribers.main] error: could not get the subscribed predicates');
+                    console.log('[publish-content-based-2.main] error: could not get the subscribed predicates');
                 }
             });
         }
@@ -51,7 +51,7 @@ function forwardPublications(params, time, resolve, reject) {
     const ows = openwhisk();
     each(subscribers[params.first_predicate], function (sub_id, callback) {
         ows.actions.invoke({
-            name: "pubsub/cache_content_based_subscribers",
+            name: "pubsub/publish_content_based_3",
             params: {
                 predicates: params.predicates,
                 message: params.message,
@@ -59,22 +59,22 @@ function forwardPublications(params, time, resolve, reject) {
                 subscriber_id: sub_id
             }
         }).then(result => {
-            console.log('[send-to-content-subscribers.forwardPublications] success: forwarded to watson action');
+            console.log('[publish-content-based-2.forwardPublications] success: forwarded to watson action');
             callback();
         }).catch(err => {
-            console.log('[send-to-content-subscribers.forwardPublications] error: could NOT forward the topic watson action');
+            console.log('[publish-content-based-2.forwardPublications] error: could NOT forward the topic watson action');
             callback();
         });
     }, function (err) {
         if (err) {
-            console.log('[send-to-content-subscribers.forwardPublications] error: Error in forwarding the publications');
+            console.log('[publish-content-based-2.forwardPublications] error: Error in forwarding the publications');
             console.log(err);
             reject({
                 result: 'Error occurred forwarding the messages.'
             });
 
         } else {
-            console.log('[send-to-content-subscribers.forwardPublications] success: Successfully forwarded');
+            console.log('[publish-content-based-2.forwardPublications] success: Successfully forwarded');
             resolve({
                 result: 'Success. Message Forwarded.'
             });

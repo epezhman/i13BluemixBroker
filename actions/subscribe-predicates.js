@@ -2,7 +2,7 @@ const eachOf = require('async/eachOf');
 const openwhisk = require('openwhisk');
 
 /**
- * 1.   For subscribing to multiple topics at once
+ * 1.   For subscribing to multiple subscriptions at once
  *
  * @param   params.predicates          Predicates to subscribe
  * @param   params.subscriber_id       Subscriber ID
@@ -26,7 +26,7 @@ function main(params) {
         }).then(result => {
                 console.log('[subscribe-predicates.main] success: All subscribed predicates removed');
                 ows.actions.invoke({
-                    name: "pubsub/add_predicates_to_subscribers",
+                    name: "pubsub/subscribe_predicates_add_predicates_to_subscribers",
                     params: {
                         subscriber_id: params.subscriber_id,
                         predicates: predicates
@@ -34,7 +34,7 @@ function main(params) {
                 });
                 eachOf(predicates, (predicateContent, predicate, pcb) => {
                     ows.actions.invoke({
-                        name: "pubsub/add_subscribers_to_predicates",
+                        name: "pubsub/subscribe_predicates_add_subscribers_to_predicates",
                         params: {
                             subscriber_id: params.subscriber_id,
                             predicate: predicate.toLowerCase()

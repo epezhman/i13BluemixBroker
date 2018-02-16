@@ -27,14 +27,14 @@ function main(params) {
                     subscribers: [params.subscriber_id]
                 }, (err, body, head) => {
                     if (err) {
-                        console.log('[add-subscribers-to-predicates.main] error: subscriber NOT added to predicate for first time.');
+                        console.log('[subscribe-predicates-add-subscribers-to-predicates.main] error: subscriber NOT added to predicate for first time.');
                         console.log(err);
                         reject({
                             result: 'Error. subscriber NOT added to predicates'
                         });
                     }
                     else {
-                        console.log('[add-subscribers-to-predicates.main] success: subscriber add to predicate for first time.');
+                        console.log('[subscribe-predicates-add-subscribers-to-predicates.main] success: subscriber add to predicate for first time.');
                         resolve({
                             result: 'Success. subscriber added to predicates'
                         });
@@ -45,14 +45,14 @@ function main(params) {
                 data.subscribers = array.union(data.subscribers, [params.subscriber_id]);
                 subscribed_predicates.insert(data, (err, body, head) => {
                     if (err) {
-                        console.log('[add-subscribers-to-predicates.main] error: subscriber NOT added to predicate.');
+                        console.log('[subscribe-predicates-add-subscribers-to-predicates.main] error: subscriber NOT added to predicate.');
                         console.log(err);
                         reject({
                             result: 'Error. subscriber NOT added to predicates'
                         });
                     }
                     else {
-                        console.log('[add-subscribers-to-predicates.main] success: subscriber add to predicate.');
+                        console.log('[subscribe-predicates-add-subscribers-to-predicates.main] success: subscriber add to predicate.');
                         resolve({
                             result: 'Success. subscriber added to predicates'
                         });

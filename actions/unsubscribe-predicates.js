@@ -23,7 +23,7 @@ function main(params) {
             if (!err) {
                 eachOf(data.predicates, (predicateContent, predicate, pcb) => {
                     ows.actions.invoke({
-                        name: "pubsub/remove_subscribers_from_predicates",
+                        name: "pubsub/unsubscribe_predicates_remove_subscribers_from_predicates",
                         blocking: true,
                         result: true,
                         params: {

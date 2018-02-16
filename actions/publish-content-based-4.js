@@ -89,18 +89,18 @@ function main(params) {
                     }
                 }
                 if (accepted) {
-                    console.log(`[perform-content-based-matching-forward-message.main] success: forwarded to watson`);
+                    console.log(`[publish-content-based-4.main] success: forwarded to watson`);
                     sendToWatson(params, resolve, reject)
                 }
                 else {
-                    console.log(`[perform-content-based-matching-forward-message.main] error: the predicates did not match`);
+                    console.log(`[publish-content-based-4.main] error: the predicates did not match`);
                     reject({
                         result: "Error, did not match."
                     });
                 }
             }
             else {
-                console.log(`[perform-content-based-matching-forward-message.main] error: subscriber has no predicates`);
+                console.log(`[publish-content-based-4.main] error: subscriber has no predicates`);
                 reject({
                     result: "Error, the subscriber has no predicates"
                 });
@@ -134,13 +134,13 @@ function sendToWatson(params, resolve, reject) {
     };
     requestPromise(req_options)
         .then(function (parsedBody) {
-            console.log(`[perform-content-based-matching-forward-message.sendToWatson] success: Message sent to Watson`);
+            console.log(`[publish-content-based-4.sendToWatson] success: Message sent to Watson`);
             resolve({
                 result: 'Success. Message Sent to Watson.'
             });
         })
         .catch(function (err) {
-            console.log(`[perform-content-based-matching-forward-message.sendToWatson] error: Message could not be sent to ${params.subscriber_id}`);
+            console.log(`[publish-content-based-4.sendToWatson] error: Message could not be sent to ${params.subscriber_id}`);
             console.log(err);
             reject({
                 result: 'Error. Message could not be sent to Watson.'
