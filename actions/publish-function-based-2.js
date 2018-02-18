@@ -35,7 +35,7 @@ function main(params) {
                     method: 'POST',
                     body: {
                         message: params.message,
-                        sub_type: params.sub_type,
+                        function_type: params.sub_type,
                         time: params.time
                     },
                     auth: {

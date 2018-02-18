@@ -21,6 +21,7 @@ function main(params) {
         });
         const subscribed_functions = cloudant.db.use('subscribed_functions');
         let sub_type = params.sub_type.trim();
+        let func_inputs = params.matching_input.split(',');
         if (sub_type.length) {
             subscribed_functions.get(sub_type, {revs_info: true}, (err, data) => {
                 if (err) {
@@ -29,7 +30,7 @@ function main(params) {
                         sub_type: sub_type,
                         subscribers: [{
                             subscriber_id: params.subscriber_id,
-                            matching_input: params.matching_input,
+                            matching_input: func_inputs,
                             matching_function: params.matching_function
                         }]
                     }, (err, body, head) => {
@@ -41,7 +42,7 @@ function main(params) {
                             });
                         }
                         else {
-                            return addFunctionToSubscriber(cloudant, sub_type, params.matching_input,
+                            return addFunctionToSubscriber(cloudant, sub_type, func_inputs,
                                 params.matching_function, params.subscriber_id, resolve, reject);
                         }
                     });
@@ -52,7 +53,7 @@ function main(params) {
                     });
                     data.subscribers = array.union(data.subscribers, [{
                         subscriber_id: params.subscriber_id,
-                        matching_input: params.matching_input,
+                        matching_input: func_inputs,
                         matching_function: params.matching_function
                     }]);
                     subscribed_functions.insert(data, (err, body, head) => {
@@ -64,7 +65,7 @@ function main(params) {
                             });
                         }
                         else {
-                            return addFunctionToSubscriber(cloudant, sub_type, params.matching_input,
+                            return addFunctionToSubscriber(cloudant, sub_type, func_inputs,
                                 params.matching_function, params.subscriber_id, resolve, reject);
 
                         }
