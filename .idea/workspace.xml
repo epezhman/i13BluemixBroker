@@ -5,8 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="50d43a40-160d-441d-b2d6-e45ddcec0157" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/actions/publish-function-based-2.js" afterPath="$PROJECT_DIR$/actions/publish-function-based-2.js" />
-      <change beforePath="$PROJECT_DIR$/actions/subscribe-functions.js" afterPath="$PROJECT_DIR$/actions/subscribe-functions.js" />
+      <change beforePath="$PROJECT_DIR$/deploy.sh" afterPath="$PROJECT_DIR$/deploy.sh" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -51,11 +50,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="deploy.sh" pinned="false" current-in-tab="false">
+      <file leaf-file-name="deploy.sh" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/deploy.sh">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="675">
-              <caret line="45" column="35" lean-forward="false" selection-start-line="45" selection-start-column="35" selection-end-line="45" selection-end-column="35" />
+            <state relative-caret-position="614">
+              <caret line="57" column="78" lean-forward="false" selection-start-line="57" selection-start-column="78" selection-end-line="57" selection-end-column="78" />
               <folding />
             </state>
           </provider>
@@ -81,11 +80,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="publish-function-based-2.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="publish-function-based-2.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/actions/publish-function-based-2.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="438">
-              <caret line="37" column="37" lean-forward="false" selection-start-line="37" selection-start-column="37" selection-end-line="37" selection-end-column="37" />
+            <state relative-caret-position="363">
+              <caret line="32" column="35" lean-forward="true" selection-start-line="32" selection-start-column="35" selection-end-line="32" selection-end-column="35" />
               <folding />
             </state>
           </provider>
@@ -160,8 +159,8 @@
       <find>add_</find>
       <find>get_sub</find>
       <find>topic</find>
-      <find>reje</find>
       <find>input</find>
+      <find>reje</find>
     </findStrings>
     <replaceStrings>
       <replace>get-subscribed-messages.get-last-read</replace>
@@ -225,11 +224,11 @@
         <option value="$PROJECT_DIR$/actions/publish-content-based-2.js" />
         <option value="$PROJECT_DIR$/actions/publish-content-based-1.js" />
         <option value="$PROJECT_DIR$/actions/subscribe-predicates.js" />
-        <option value="$PROJECT_DIR$/deploy.sh" />
         <option value="$PROJECT_DIR$/actions/publish-content-based-4.js" />
         <option value="$PROJECT_DIR$/actions/publish-topic-based-3.js" />
         <option value="$PROJECT_DIR$/actions/subscribe-functions.js" />
         <option value="$PROJECT_DIR$/actions/publish-function-based-2.js" />
+        <option value="$PROJECT_DIR$/deploy.sh" />
       </list>
     </option>
   </component>
@@ -416,12 +415,12 @@
       <workItem from="1518453426665" duration="20905000" />
       <workItem from="1518882841104" duration="647000" />
       <workItem from="1518950252486" duration="1056000" />
-      <workItem from="1518962806990" duration="1778000" />
+      <workItem from="1518962806990" duration="2104000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="179014000" />
+    <option name="totallyTimeSpent" value="179340000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1680" height="1050" extended-state="0" />
@@ -663,14 +662,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/deploy.sh">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="675">
-          <caret line="45" column="35" lean-forward="false" selection-start-line="45" selection-start-column="35" selection-end-line="45" selection-end-column="35" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/actions/publish-topic-based-2.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="495">
@@ -729,8 +720,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/actions/publish-function-based-2.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="438">
-          <caret line="37" column="37" lean-forward="false" selection-start-line="37" selection-start-column="37" selection-end-line="37" selection-end-column="37" />
+        <state relative-caret-position="363">
+          <caret line="32" column="35" lean-forward="true" selection-start-line="32" selection-start-column="35" selection-end-line="32" selection-end-column="35" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/deploy.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="614">
+          <caret line="57" column="78" lean-forward="false" selection-start-line="57" selection-start-column="78" selection-end-line="57" selection-end-column="78" />
           <folding />
         </state>
       </provider>

@@ -55,7 +55,7 @@ function install() {
   wsk action create pubsub/bulk_subscribe_function actions/bulk-subscribe-function.js --web true
   wsk action create pubsub/publish_function_based_1 actions/publish-function-based-1.js --web true
 
-  wsk action create pubsub/publish_topic_based_3 actions/publish-topic-based-2.js \
+  wsk action create pubsub/publish_topic_based_3 actions/publish-topic-based-3.js \
   --param "WATSON_IOT_ORG" $WATSON_IOT_ORG \
   --param "WATSON_IOT_APPLICATION_TYPE" $WATSON_IOT_APPLICATION_TYPE \
   --param "WATSON_IOT_API_USERNAME" $WATSON_IOT_API_USERNAME \
