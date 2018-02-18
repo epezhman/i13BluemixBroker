@@ -21,7 +21,7 @@ function main(params) {
         });
         const subscribed_functions = cloudant.db.use('subscribed_functions');
         let sub_type = params.sub_type.trim();
-        let func_inputs = params.matching_input.split(',');
+        let func_inputs = params.matching_input.trim().split(',');
         if (sub_type.length) {
             subscribed_functions.get(sub_type, {revs_info: true}, (err, data) => {
                 if (err) {
@@ -85,7 +85,6 @@ function addFunctionToSubscriber(cloudant, sub_type, matching_input, matching_fu
     const subscribers = cloudant.db.use('subscribers');
     return subscribers.get(subscriber_id, {revs_info: true}, (err, data) => {
         if (!err) {
-
             data.function_matching = Array.isArray(data.function_matching) ? data.function_matching : [];
             data.function_matching = array.remove(data.function_matching, function (sub_info) {
                 return sub_info["sub_type"] !== sub_type

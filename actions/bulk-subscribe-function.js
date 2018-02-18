@@ -27,6 +27,14 @@ function main(params) {
 
             let subs = params.subscribers.split(',');
             let sub_type = params.sub_type.trim();
+            let func_inputs = [];
+            let func_temp = params.matching_input.trim().split(',');
+            func_temp.forEach((func_input) => {
+                if(func_input.trim().length)
+                {
+                    func_inputs.push(func_input.trim());
+                }
+            });
 
             eachSeries(subs, (sub_id, ecb) => {
                 subscribers.get(sub_id, {revs_info: true}, (err, data) => {
@@ -38,7 +46,7 @@ function main(params) {
                         });
                         data.function_matching = array.union(data.function_matching, [{
                             sub_type: sub_type,
-                            matching_input: params.matching_input,
+                            matching_input: func_inputs,
                             matching_function: params.matching_function
                         }]);
 
@@ -75,11 +83,10 @@ function main(params) {
                     for (let i = 0; i < subs.length; i++) {
                         temp_functions.push({
                             subscriber_id: subs[i],
-                            matching_input: params.matching_input,
+                            matching_input: func_inputs,
                             matching_function: params.matching_function
                         });
                     }
-
                     subscribed_functions.get(sub_type, {revs_info: true}, (err, data) => {
                         if (err) {
                             subscribed_functions.insert({

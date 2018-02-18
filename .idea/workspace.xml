@@ -5,7 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="50d43a40-160d-441d-b2d6-e45ddcec0157" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/actions/publish-function-based-2.js" afterPath="$PROJECT_DIR$/actions/publish-function-based-2.js" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change beforePath="$PROJECT_DIR$/actions/bulk-subscribe-function.js" afterPath="$PROJECT_DIR$/actions/bulk-subscribe-function.js" />
+      <change beforePath="$PROJECT_DIR$/actions/subscribe-functions.js" afterPath="$PROJECT_DIR$/actions/subscribe-functions.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -23,88 +25,8 @@
       <file leaf-file-name="publish-content-based-1.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/actions/publish-content-based-1.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
+            <state relative-caret-position="15">
               <caret line="5" column="8" lean-forward="false" selection-start-line="5" selection-start-column="8" selection-end-line="5" selection-end-column="8" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="publish-content-based-2.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/actions/publish-content-based-2.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="468">
-              <caret line="39" column="58" lean-forward="true" selection-start-line="39" selection-start-column="48" selection-end-line="39" selection-end-column="58" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="publish-content-based-3.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/actions/publish-content-based-3.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="613">
-              <caret line="72" column="45" lean-forward="false" selection-start-line="72" selection-start-column="45" selection-end-line="72" selection-end-column="45" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="deploy.sh" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/deploy.sh">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="382">
-              <caret line="57" column="78" lean-forward="false" selection-start-line="57" selection-start-column="78" selection-end-line="57" selection-end-column="78" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="local.env" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/local.env">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="420">
-              <caret line="28" column="0" lean-forward="true" selection-start-line="28" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="publish-topic-based-1.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/actions/publish-topic-based-1.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="58">
-              <caret line="17" column="33" lean-forward="true" selection-start-line="17" selection-start-column="33" selection-end-line="17" selection-end-column="33" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="publish-function-based-2.js" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/actions/publish-function-based-2.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="411">
-              <caret line="38" column="40" lean-forward="false" selection-start-line="38" selection-start-column="40" selection-end-line="38" selection-end-column="40" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="unsubscribe-functions.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/actions/unsubscribe-functions.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="332">
-              <caret line="58" column="19" lean-forward="true" selection-start-line="58" selection-start-column="19" selection-end-line="58" selection-end-column="19" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="subscribe-functions.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/actions/subscribe-functions.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-316">
-              <caret line="67" column="90" lean-forward="false" selection-start-line="67" selection-start-column="90" selection-end-line="67" selection-end-column="90" />
               <folding />
             </state>
           </provider>
@@ -115,6 +37,36 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="495">
               <caret line="33" column="6" lean-forward="false" selection-start-line="33" selection-start-column="6" selection-end-line="33" selection-end-column="6" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="subscribe-functions.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/actions/subscribe-functions.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="259">
+              <caret line="29" column="27" lean-forward="true" selection-start-line="29" selection-start-column="27" selection-end-line="29" selection-end-column="27" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="bulk-subscribe-function.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/actions/bulk-subscribe-function.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="256">
+              <caret line="29" column="32" lean-forward="false" selection-start-line="29" selection-start-column="32" selection-end-line="29" selection-end-column="32" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="publish-function-based-1.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/actions/publish-function-based-1.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="204">
+              <caret line="58" column="16" lean-forward="false" selection-start-line="58" selection-start-column="16" selection-end-line="58" selection-end-column="16" />
               <folding />
             </state>
           </provider>
@@ -131,8 +83,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>add_sub</find>
-      <find>back</find>
       <find>remove_sub</find>
       <find>bulk_</find>
       <find>remove-</find>
@@ -161,6 +111,8 @@
       <find>input</find>
       <find>reje</find>
       <find>topic-base</find>
+      <find>bulk</find>
+      <find>matching_input</find>
     </findStrings>
     <replaceStrings>
       <replace>get-subscribed-messages.get-last-read</replace>
@@ -201,7 +153,6 @@
         <option value="$PROJECT_DIR$/actions/ref.js" />
         <option value="$PROJECT_DIR$/_actions/_deploy.sh" />
         <option value="$PROJECT_DIR$/actions/unsubscribe-functions.js" />
-        <option value="$PROJECT_DIR$/actions/bulk-subscribe-function.js" />
         <option value="$PROJECT_DIR$/actions/publish-topic-based.js" />
         <option value="$PROJECT_DIR$/actions/do-function-matching-and-forward-if-match.js" />
         <option value="$PROJECT_DIR$/actions/publish-function-based.js" />
@@ -226,9 +177,10 @@
         <option value="$PROJECT_DIR$/actions/subscribe-predicates.js" />
         <option value="$PROJECT_DIR$/actions/publish-content-based-4.js" />
         <option value="$PROJECT_DIR$/actions/publish-topic-based-3.js" />
-        <option value="$PROJECT_DIR$/actions/subscribe-functions.js" />
         <option value="$PROJECT_DIR$/deploy.sh" />
         <option value="$PROJECT_DIR$/actions/publish-function-based-2.js" />
+        <option value="$PROJECT_DIR$/actions/subscribe-functions.js" />
+        <option value="$PROJECT_DIR$/actions/bulk-subscribe-function.js" />
       </list>
     </option>
   </component>
@@ -248,7 +200,7 @@
   <component name="NodeModulesDirectoryManager">
     <handled-path value="$PROJECT_DIR$/node_modules" />
   </component>
-  <component name="ProjectFrameBounds" fullScreen="true">
+  <component name="ProjectFrameBounds">
     <option name="y" value="22" />
     <option name="width" value="1680" />
     <option name="height" value="970" />
@@ -270,7 +222,6 @@
     </navigator>
     <panes>
       <pane id="Scope" />
-      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -287,6 +238,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -298,6 +250,7 @@
     <property name="ToolWindowSalesforce.ShowToolbar" value="false" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
     <property name="HbShouldOpenHtmlAsHb" value="" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -415,15 +368,17 @@
       <workItem from="1518453426665" duration="20905000" />
       <workItem from="1518882841104" duration="647000" />
       <workItem from="1518950252486" duration="1056000" />
-      <workItem from="1518962806990" duration="2601000" />
+      <workItem from="1518962806990" duration="2669000" />
+      <workItem from="1518972831990" duration="524000" />
+      <workItem from="1518974249697" duration="1007000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="179837000" />
+    <option name="totallyTimeSpent" value="181436000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="0" width="1680" height="1050" extended-state="0" />
+    <frame x="0" y="22" width="1680" height="970" extended-state="0" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.28933093" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -433,7 +388,7 @@
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32958034" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32958034" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.29068577" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.26628572" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -617,13 +572,6 @@
     <entry file="file://$PROJECT_DIR$/actions/publish-topic-based.js" />
     <entry file="file://$PROJECT_DIR$/actions/broker.js" />
     <entry file="file://$PROJECT_DIR$/actions/get-subscribed-topics.js" />
-    <entry file="file://$PROJECT_DIR$/actions/bulk-subscribe-function.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="859">
-          <caret line="129" column="9" lean-forward="true" selection-start-line="123" selection-start-column="7" selection-end-line="129" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/actions/subscribe-predicates.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="364">
@@ -631,41 +579,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/actions/publish-function-based-1.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="184">
-          <caret line="41" column="109" lean-forward="true" selection-start-line="41" selection-start-column="109" selection-end-line="41" selection-end-column="109" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/actions/publish-content-based-1.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="5" column="8" lean-forward="false" selection-start-line="5" selection-start-column="8" selection-end-line="5" selection-end-column="8" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/actions/publish-topic-based-2.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="495">
-          <caret line="33" column="6" lean-forward="false" selection-start-line="33" selection-start-column="6" selection-end-line="33" selection-end-column="6" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/actions/publish-content-based-4.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="491">
           <caret line="96" column="27" lean-forward="false" selection-start-line="96" selection-start-column="27" selection-end-line="96" selection-end-column="27" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/local.env">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="420">
-          <caret line="28" column="0" lean-forward="true" selection-start-line="28" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -678,34 +595,34 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/actions/publish-content-based-2.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="468">
+          <caret line="39" column="58" lean-forward="true" selection-start-line="39" selection-start-column="48" selection-end-line="39" selection-end-column="58" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/actions/publish-topic-based-1.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="58">
+        <state relative-caret-position="88">
           <caret line="17" column="33" lean-forward="true" selection-start-line="17" selection-start-column="33" selection-end-line="17" selection-end-column="33" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/actions/subscribe-functions.js">
+    <entry file="file://$PROJECT_DIR$/local.env">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-316">
-          <caret line="67" column="90" lean-forward="false" selection-start-line="67" selection-start-column="90" selection-end-line="67" selection-end-column="90" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/actions/unsubscribe-functions.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="332">
-          <caret line="58" column="19" lean-forward="true" selection-start-line="58" selection-start-column="19" selection-end-line="58" selection-end-column="19" />
+        <state relative-caret-position="420">
+          <caret line="28" column="0" lean-forward="true" selection-start-line="28" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/deploy.sh">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="382">
-          <caret line="57" column="78" lean-forward="false" selection-start-line="57" selection-start-column="78" selection-end-line="57" selection-end-column="78" />
+        <state relative-caret-position="457">
+          <caret line="51" column="48" lean-forward="false" selection-start-line="51" selection-start-column="27" selection-end-line="51" selection-end-column="48" />
           <folding />
         </state>
       </provider>
@@ -718,18 +635,56 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/actions/publish-content-based-2.js">
+    <entry file="file://$PROJECT_DIR$/actions/publish-function-based-2.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="468">
-          <caret line="39" column="58" lean-forward="true" selection-start-line="39" selection-start-column="48" selection-end-line="39" selection-end-column="58" />
+        <state relative-caret-position="87">
+          <caret line="38" column="40" lean-forward="false" selection-start-line="38" selection-start-column="40" selection-end-line="38" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/actions/unsubscribe-functions.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="332">
+          <caret line="58" column="19" lean-forward="true" selection-start-line="58" selection-start-column="19" selection-end-line="58" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/actions/publish-topic-based-2.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="495">
+          <caret line="33" column="6" lean-forward="false" selection-start-line="33" selection-start-column="6" selection-end-line="33" selection-end-column="6" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/actions/publish-function-based-2.js">
+    <entry file="file://$PROJECT_DIR$/actions/publish-content-based-1.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="411">
-          <caret line="38" column="40" lean-forward="false" selection-start-line="38" selection-start-column="40" selection-end-line="38" selection-end-column="40" />
+        <state relative-caret-position="15">
+          <caret line="5" column="8" lean-forward="false" selection-start-line="5" selection-start-column="8" selection-end-line="5" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/actions/publish-function-based-1.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="58" column="16" lean-forward="false" selection-start-line="58" selection-start-column="16" selection-end-line="58" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/actions/subscribe-functions.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="259">
+          <caret line="29" column="27" lean-forward="true" selection-start-line="29" selection-start-column="27" selection-end-line="29" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/actions/bulk-subscribe-function.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="256">
+          <caret line="29" column="32" lean-forward="false" selection-start-line="29" selection-start-column="32" selection-end-line="29" selection-end-column="32" />
           <folding />
         </state>
       </provider>
