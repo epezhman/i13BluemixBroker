@@ -37,7 +37,6 @@ function install() {
   echo "Creating Actions"
   wsk action create pubsub/subscribe_topics actions/subscribe-topics.js --web true
   wsk action create pubsub/unsubscribe_topics actions/unsubscribe-topics.js --web true
-  wsk action create pubsub/get_sub_topics actions/get-subscribed-topics.js --web true
   wsk action create pubsub/register_subscriber actions/register-subscriber.js --web true
   wsk action create pubsub/publish_topic_based_1 actions/publish-topic-based-1.js --web true
   wsk action create pubsub/publish_topic_based_2 actions/publish-topic-based-2.js
@@ -77,7 +76,6 @@ function install() {
   echo "Creating API"
   wsk api create -n "SubscribeTopics" /pubsub /subscribe_topics post pubsub/subscribe_topics --response-type json
   wsk api create -n "UnsubscribeTopics" /pubsub /unsubscribe_topics post pubsub/unsubscribe_topics --response-type json
-  wsk api create -n "GetSubscribedTopics" /pubsub /get_subscribed_topics get pubsub/get_sub_topics --response-type json
   wsk api create -n "RegisterSubscriber" /pubsub /register_subscriber get pubsub/register_subscriber --response-type json
   wsk api create -n "PublishTopicBased" /pubsub /publish_topic_based_1 post pubsub/publish_topic_based_1 --response-type json
   wsk api create -n "PublishContentBased" /pubsub /publish_content_based_1 post pubsub/publish_content_based_1 --response-type json
@@ -98,7 +96,6 @@ function uninstall() {
   echo "Removing Actions"
   wsk action delete pubsub/subscribe_topics
   wsk action delete pubsub/unsubscribe_topics
-  wsk action delete pubsub/get_sub_topics
   wsk action delete pubsub/register_subscriber
   wsk action delete pubsub/publish_topic_based_1
   wsk action delete pubsub/publish_topic_based_2
@@ -164,7 +161,6 @@ function updateActions()
 {
   wsk action update pubsub/subscribe_topics actions/subscribe-topics.js --web true
   wsk action update pubsub/unsubscribe_topics actions/unsubscribe-topics.js --web true
-  wsk action update pubsub/get_sub_topics actions/get-subscribed-topics.js --web true
   wsk action update pubsub/register_subscriber actions/register-subscriber.js --web true
   wsk action update pubsub/publish_topic_based_1 actions/publish-topic-based-1.js --web true
   wsk action update pubsub/publish_topic_based_2 actions/publish-topic-based-2.js
