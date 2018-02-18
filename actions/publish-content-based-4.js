@@ -94,7 +94,7 @@ function main(params) {
                 }
                 else {
                     console.log(`[publish-content-based-4.main] error: the predicates did not match`);
-                    reject({
+                    resolve({
                         result: "Error, did not match."
                     });
                 }
