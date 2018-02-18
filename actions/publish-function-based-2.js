@@ -36,7 +36,7 @@ function main(params) {
                     body: {
                         message: params.message,
                         function_type: params.sub_type,
-                        time: params.time
+                        time: Date.now()
                     },
                     auth: {
                         'username': params.WATSON_IOT_API_USERNAME,
