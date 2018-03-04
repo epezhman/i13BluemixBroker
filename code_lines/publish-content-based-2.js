@@ -1,22 +1,9 @@
 const Cloudant = require('cloudant');
 const openwhisk = require('openwhisk');
 const each = require('async/each');
-
 let subscribers = {};
 let last_checked_contents = {};
-const stale_time_ms = 10000;
-
-/**
- * 1.   Get subscribed messages of an app
- *
- * @param   params.first_predicate     First published predicate
- * @param   params.predicates            Publication's predicates
- * @param   params.message             Publication message
- * @param   params.CLOUDANT_USERNAME   Cloudant username (set once at action update time)
- * @param   params.CLOUDANT_PASSWORD   Cloudant password (set once at action update time)
- * @return                             Promise success/error response
- */
-
+const stale_time_ms = 1000;
 function main(params) {
     return new Promise((resolve, reject) => {
         if (!last_checked_contents.hasOwnProperty(params.first_predicate)) {
@@ -46,7 +33,6 @@ function main(params) {
         }
     });
 }
-
 function forwardPublications(params, time, resolve, reject) {
     const ows = openwhisk();
     each(subscribers[params.first_predicate], function (sub_id, callback) {

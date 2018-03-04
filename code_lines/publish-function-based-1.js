@@ -1,21 +1,9 @@
 const each = require('async/each');
 const openwhisk = require('openwhisk');
 const Cloudant = require('cloudant');
-
 let subscribers = {};
 let last_checked_sub_types = {};
-const stale_time_ms = 10000;
-
-/**
- * 1.   It receives a message and its subscription type from the publisher and forwards to the next action
- *
- * @param   params.sub_type              The topics of the message
- * @param   params.message             The body of the published message
- * @param   params.CLOUDANT_USERNAME   Cloudant username (set once at action update time)
- * @param   params.CLOUDANT_PASSWORD   Cloudant password (set once at action update time)
- * @return                             Promise OpenWhisk success/error response
- */
-
+const stale_time_ms = 1000;
 function main(params) {
     return new Promise((resolve, reject) => {
         if (!last_checked_sub_types.hasOwnProperty(params.sub_type)) {

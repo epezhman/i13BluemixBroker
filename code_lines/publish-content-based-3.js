@@ -1,22 +1,8 @@
 const openwhisk = require('openwhisk');
 const Cloudant = require('cloudant');
-
 let subscribers = {};
 let last_checked_subscribers_contents = {};
-const stale_time_ms = 10000;
-
-/**
- * 1.   It receives a message and its topics from the publisher and submits them to the Cloudant
- *
- * @param   params.predicates                   The predicates of the message
- * @param   params.message                      The body of the published message
- * @param   params.time                         The message time
- * @param   params.subscriber_id                The subscriber ID
- * @param   params.CLOUDANT_USERNAME            Cloudant username (set once at action update time)
- * @param   params.CLOUDANT_PASSWORD            Cloudant password (set once at action update time)
- * @return                             Promise OpenWhisk success/error response
- */
-
+const stale_time_ms = 1000;
 function main(params) {
     return new Promise((resolve, reject) => {
         if (!last_checked_subscribers_contents.hasOwnProperty(params.subscriber_id)) {
@@ -66,7 +52,6 @@ function main(params) {
         }
     });
 }
-
 function forwardPublications(params, time, resolve, reject) {
     const ows = openwhisk();
     ows.actions.invoke({
