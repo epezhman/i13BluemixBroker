@@ -19,6 +19,7 @@ function install() {
   echo -e "${YELLOW}Installing OpenWhisk actions, and rules for check-deposit...${NC}"
 
   echo "Logging in to Bluemix"
+  wsk property set --apihost $OPENWHISK_DE
   wsk bluemix login --user $OPENWHISK_USER_NAME \
   --password $OPENWHISK_PASSWORD \
   --namespace $OPENWHISK_NAMESPACE
@@ -93,6 +94,12 @@ function install() {
 function uninstall() {
   echo -e "${RED}Uninstalling...${NC}"
 
+  echo "Logging in to Bluemix"
+  wsk property set --apihost $OPENWHISK_DE
+  wsk bluemix login --user $OPENWHISK_USER_NAME \
+  --password $OPENWHISK_PASSWORD \
+  --namespace $OPENWHISK_NAMESPACE
+
   echo "Removing Actions"
   wsk action delete pubsub/subscribe_topics
   wsk action delete pubsub/unsubscribe_topics
@@ -116,7 +123,6 @@ function uninstall() {
   wsk action delete pubsub/bulk_subscribe_function
   wsk action delete pubsub/publish_function_based_1
   wsk action delete pubsub/publish_function_based_2
-
 
   echo "Removing packages..."
   wsk package delete "$CLOUDANT_INSTANCE"

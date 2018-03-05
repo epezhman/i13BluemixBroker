@@ -3,3 +3,6 @@
 *npm-debug.log
 local.env
 **/temp/
+backup.sh
+backups/
+restoredb.sh
