@@ -68,11 +68,17 @@ function install() {
   --param "WATSON_IOT_API_USERNAME" $WATSON_IOT_API_USERNAME \
   --param "WATSON_IOT_API_PASSWORD" $WATSON_IOT_API_PASSWORD
 
-  wsk action create pubsub/publish_function_based_2 actions/publish-function-based-2.js \
+  wsk action create pubsub/publish_function_based_2 --kind nodejs:8 publish-function-based-2/action.zip \
   --param "WATSON_IOT_ORG" $WATSON_IOT_ORG \
   --param "WATSON_IOT_APPLICATION_TYPE" $WATSON_IOT_APPLICATION_TYPE \
   --param "WATSON_IOT_API_USERNAME" $WATSON_IOT_API_USERNAME \
   --param "WATSON_IOT_API_PASSWORD" $WATSON_IOT_API_PASSWORD
+
+#  wsk action create pubsub/publish_function_based_2 actions/publish-function-based-2.js \
+#  --param "WATSON_IOT_ORG" $WATSON_IOT_ORG \
+#  --param "WATSON_IOT_APPLICATION_TYPE" $WATSON_IOT_APPLICATION_TYPE \
+#  --param "WATSON_IOT_API_USERNAME" $WATSON_IOT_API_USERNAME \
+#  --param "WATSON_IOT_API_PASSWORD" $WATSON_IOT_API_PASSWORD
 
   echo "Creating API"
   wsk api create -n "SubscribeTopics" /pubsub /subscribe_topics post pubsub/subscribe_topics --response-type json
@@ -197,7 +203,13 @@ function updateActions()
   --param "WATSON_IOT_API_USERNAME" $WATSON_IOT_API_USERNAME \
   --param "WATSON_IOT_API_PASSWORD" $WATSON_IOT_API_PASSWORD
 
-  wsk action update pubsub/publish_function_based_2 actions/publish-function-based-2.js \
+#  wsk action update pubsub/publish_function_based_2 actions/publish-function-based-2.js \
+#  --param "WATSON_IOT_ORG" $WATSON_IOT_ORG \
+#  --param "WATSON_IOT_APPLICATION_TYPE" $WATSON_IOT_APPLICATION_TYPE \
+#  --param "WATSON_IOT_API_USERNAME" $WATSON_IOT_API_USERNAME \
+#  --param "WATSON_IOT_API_PASSWORD" $WATSON_IOT_API_PASSWORD
+
+  wsk action update pubsub/publish_function_based_2 --kind nodejs:8 publish-function-based-2/action.zip \
   --param "WATSON_IOT_ORG" $WATSON_IOT_ORG \
   --param "WATSON_IOT_APPLICATION_TYPE" $WATSON_IOT_APPLICATION_TYPE \
   --param "WATSON_IOT_API_USERNAME" $WATSON_IOT_API_USERNAME \

@@ -1,0 +1,7 @@
+{
+  "name": "publish-function-based-2",
+  "main": "index.js",
+  "dependencies": {
+    "compromise": "^11.5.2"
+  }
+}
