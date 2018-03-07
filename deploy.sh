@@ -43,7 +43,6 @@ function install() {
   wsk action create pubsub/publish_topic_based_2 actions/publish-topic-based-2.js
   wsk action create pubsub/publish_content_based_1 actions/publish-content-based-1.js --web true
   wsk action create pubsub/publish_content_based_2 actions/publish-content-based-2.js
-  wsk action create pubsub/publish_content_based_3 actions/publish-content-based-3.js
   wsk action create pubsub/unsubscribe_predicates actions/unsubscribe-predicates.js
   wsk action create pubsub/subscribe_predicates actions/subscribe-predicates.js --web true
   wsk action create pubsub/subscribe_predicates_add_predicates_to_subscribers actions/subscribe-predicates-add-predicates-to-subscribers.js
@@ -62,7 +61,7 @@ function install() {
   --param "WATSON_IOT_API_USERNAME" $WATSON_IOT_API_USERNAME \
   --param "WATSON_IOT_API_PASSWORD" $WATSON_IOT_API_PASSWORD
 
-  wsk action create pubsub/publish_content_based_4 actions/publish-content-based-4.js \
+  wsk action create pubsub/publish_content_based_3 actions/publish-content-based-3.js \
   --param "WATSON_IOT_ORG" $WATSON_IOT_ORG \
   --param "WATSON_IOT_APPLICATION_TYPE" $WATSON_IOT_APPLICATION_TYPE \
   --param "WATSON_IOT_API_USERNAME" $WATSON_IOT_API_USERNAME \
@@ -116,7 +115,6 @@ function uninstall() {
   wsk action delete pubsub/publish_content_based_1
   wsk action delete pubsub/publish_content_based_2
   wsk action delete pubsub/publish_content_based_3
-  wsk action delete pubsub/publish_content_based_4
   wsk action delete pubsub/unsubscribe_predicates
   wsk action delete pubsub/subscribe_predicates
   wsk action delete pubsub/subscribe_predicates_add_predicates_to_subscribers
@@ -178,7 +176,6 @@ function updateActions()
   wsk action update pubsub/publish_topic_based_2 actions/publish-topic-based-2.js
   wsk action update pubsub/publish_content_based_1 actions/publish-content-based-1.js --web true
   wsk action update pubsub/publish_content_based_2 actions/publish-content-based-2.js
-  wsk action update pubsub/publish_content_based_3 actions/publish-content-based-3.js
   wsk action update pubsub/unsubscribe_predicates actions/unsubscribe-predicates.js
   wsk action update pubsub/subscribe_predicates actions/subscribe-predicates.js --web true
   wsk action update pubsub/subscribe_predicates_add_predicates_to_subscribers actions/subscribe-predicates-add-predicates-to-subscribers.js
@@ -197,7 +194,7 @@ function updateActions()
   --param "WATSON_IOT_API_USERNAME" $WATSON_IOT_API_USERNAME \
   --param "WATSON_IOT_API_PASSWORD" $WATSON_IOT_API_PASSWORD
 
-  wsk action update pubsub/publish_content_based_4 actions/publish-content-based-4.js \
+  wsk action update pubsub/publish_content_based_3 actions/publish-content-based-3.js \
   --param "WATSON_IOT_ORG" $WATSON_IOT_ORG \
   --param "WATSON_IOT_APPLICATION_TYPE" $WATSON_IOT_APPLICATION_TYPE \
   --param "WATSON_IOT_API_USERNAME" $WATSON_IOT_API_USERNAME \

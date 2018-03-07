@@ -1,6 +1,7 @@
 const eachOfSeries = require('async/eachOfSeries');
 const eachSeries = require('async/eachSeries');
 const Cloudant = require('cloudant');
+const array = require('lodash/array');
 
 /**
  * 1.   For subscribing to multiple topics at once
@@ -29,10 +30,17 @@ function main(params) {
                 let predicateLower = predicate.toLowerCase();
                 subscribed_predicates.get(predicateLower, {revs_info: true}, (err, data) => {
                     if (err) {
+                        let temp_subs = [];
+                        for (let i = 0; i < subs.length; i++) {
+                            temp_subs.push({
+                                subscriber_id: subs[i],
+                                predicates: predicates
+                            });
+                        }
                         subscribed_predicates.insert({
                             _id: predicateLower,
                             subject: predicateLower,
-                            subscribers: params.subscribes.split(',')
+                            subscribers: temp_subs
                         }, (err, body, head) => {
                             if (err) {
                                 console.log('[bulk-subscribe-predicates.main] error: subscriber NOT added to predicate for first time.');
@@ -45,7 +53,14 @@ function main(params) {
                         });
                     }
                     else {
-                        data.subscribers = params.subscribes.split(',');
+                        let temp_subs = [];
+                        for (let i = 0; i < subs.length; i++) {
+                            temp_subs.push({
+                                subscriber_id: subs[i],
+                                predicates: predicates
+                            });
+                        }
+                        data.subscribers = temp_subs;
                         subscribed_predicates.insert(data, (err, body, head) => {
                             if (err) {
                                 console.log('[bulk-subscribe-predicates.main] error: subscriber NOT added to predicate.');

@@ -49,14 +49,15 @@ function main(params) {
 
 function forwardPublications(params, time, resolve, reject) {
     const ows = openwhisk();
-    each(subscribers[params.first_predicate], function (sub_id, callback) {
+    each(subscribers[params.first_predicate], function (sub_info, callback) {
         ows.actions.invoke({
             name: "pubsub/publish_content_based_3",
             params: {
                 predicates: params.predicates,
                 message: params.message,
                 time: time,
-                subscriber_id: sub_id
+                subscriber_id: sub_info['subscriber_id'],
+                subscriber_predicates: sub_info['predicates']
             }
         }).then(result => {
             console.log('[publish-content-based-2.forwardPublications] success: forwarded to watson action');

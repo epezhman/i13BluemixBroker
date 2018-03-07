@@ -1,80 +1,130 @@
-const openwhisk = require('openwhisk');
-const Cloudant = require('cloudant');
-let subscribers = {};
-let last_checked_subscribers_contents = {};
-const stale_time_ms = 1000;
+const requestPromise = require('request-promise');
 function main(params) {
     return new Promise((resolve, reject) => {
-        if (!last_checked_subscribers_contents.hasOwnProperty(params.subscriber_id)) {
-            last_checked_subscribers_contents[params.subscriber_id] = Date.now();
-        }
-        if (subscribers.hasOwnProperty(params.subscriber_id) &&
-            Date.now() - last_checked_subscribers_contents[params.subscriber_id] < stale_time_ms) {
-            if (Object.keys(subscribers[params.subscriber_id]).length) {
-                forwardPublications(params, Date.now(), resolve, reject)
-            }
-            else {
-                console.log('[publish-content-based-3.main] error: does not have any predicates');
-                reject({
-                    result: "Does not have any predicates"
-                })
-            }
-        }
-        else {
-            const cloudant = new Cloudant({
-                account: params.CLOUDANT_USERNAME,
-                password: params.CLOUDANT_PASSWORD
-            });
-            const subscribers_db = cloudant.db.use('subscribers');
-            subscribers_db.get(params.subscriber_id, (err, result) => {
-                if (!err) {
-                    console.log('[publish-content-based-3.main] success: got the subscribed topics');
-                    last_checked_subscribers_contents[params.subscriber_id] = Date.now();
-                    subscribers[params.subscriber_id] = result.hasOwnProperty('predicates') ? result['predicates'] : [];
-                    if (Object.keys(subscribers[params.subscriber_id]).length) {
-                        forwardPublications(params, Date.now(), resolve, reject)
+        try {
+            if (Object.keys(params.predicates).length) {
+                let accepted = false;
+                for (let predicate in params.subscriber_predicates) {
+                    if (params.subscriber_predicates.hasOwnProperty(predicate)
+                        && params.predicates.hasOwnProperty(predicate.toLowerCase())) {
+                        let operator = params.subscriber_predicates[predicate]['operator'];
+                        if (operator === '>=' || operator === '>' || operator === '<' || operator === '<=') {
+                            let publicationVal = parseFloat(params.predicates[predicate]);
+                            let subscriberVal = parseFloat(params.subscriber_predicates[predicate]['value']);
+                            if (isNaN(publicationVal) || isNaN(subscriberVal)) {
+                                accepted = false;
+                                break;
+                            }
+                            else {
+                                if (operator === '>=') {
+                                    if (subscriberVal >= subscriberVal) {
+                                        accepted = true;
+                                    }
+                                    else {
+                                        accepted = false;
+                                        break;
+                                    }
+
+                                } else if (operator === '>') {
+                                    if (publicationVal > subscriberVal) {
+                                        accepted = true;
+                                    }
+                                    else {
+                                        accepted = false;
+                                        break;
+                                    }
+
+                                } else if (operator === '<') {
+                                    if (publicationVal < subscriberVal) {
+                                        accepted = true;
+                                    }
+                                    else {
+                                        accepted = false;
+                                        break;
+                                    }
+
+                                } else if (operator === '<=') {
+                                    if (publicationVal <= subscriberVal) {
+                                        accepted = true;
+                                    }
+                                    else {
+                                        accepted = false;
+                                        break;
+                                    }
+                                }
+                            }
+                        } else if (operator === '=') {
+                            let publicationVal = params.predicates[predicate].toString();
+                            let subscriberVal = params.subscriber_predicates[predicate]['value'].toString();
+                            if (publicationVal.toLowerCase() === subscriberVal.toLowerCase()) {
+                                accepted = true;
+                            }
+                            else {
+                                accepted = false;
+                                break;
+                            }
+                        }
                     }
                     else {
-                        console.log('[publish-content-based-3.main] error: does not have any predicates');
-                        reject({
-                            result: "Does not have any predicates"
-                        })
+                        accepted = false;
+                        break;
                     }
                 }
-                else {
-                    console.log('[publish-content-based-3.main] error: could not get the subscribed topics');
-                    console.log(err);
-                    reject({
-                        result: "Error could not get the topics"
-                    })
+                if (accepted) {
+                    console.log(`[publish-content-based-4.main] success: forwarded to watson`);
+                    sendToWatson(params, resolve, reject)
                 }
+                else {
+                    console.log(`[publish-content-based-4.main] error: the predicates did not match`);
+                    resolve({
+                        result: "Error, did not match."
+                    });
+                }
+            }
+            else {
+                console.log(`[publish-content-based-4.main] error: subscriber has no predicates`);
+                reject({
+                    result: "Error, the subscriber has no predicates"
+                });
+            }
+        }
+        catch (err) {
+            console.log(err);
+            reject({
+                result: "Error, Look into trace"
             });
         }
     });
+
 }
-function forwardPublications(params, time, resolve, reject) {
-    const ows = openwhisk();
-    ows.actions.invoke({
-        name: "pubsub/publish_content_based_4",
-        params: {
-            predicates: params.predicates,
+function sendToWatson(params, resolve, reject) {
+    let subscriber_url = `https://${params.WATSON_IOT_ORG}.messaging.internetofthings.ibmcloud.com:8883/api/v0002/application/types/${params.WATSON_IOT_APPLICATION_TYPE}/devices/${params.subscriber_id}/commands/published_message`;
+    let req_options = {
+        uri: subscriber_url,
+        method: 'POST',
+        body: {
             message: params.message,
-            time: time,
-            subscriber_predicates: subscribers[params.subscriber_id],
-            subscriber_id: params.subscriber_id
-        }
-    }).then(result => {
-            console.log('[cpublish-content-based-3.forwardPublications] success: forwarded to watson action');
+            predicates: params.predicates,
+            time: params.time
+        },
+        auth: {
+            'username': params.WATSON_IOT_API_USERNAME,
+            'password': params.WATSON_IOT_API_PASSWORD
+        },
+        json: true
+    };
+    requestPromise(req_options)
+        .then(function (parsedBody) {
+            console.log(`[publish-content-based-4.sendToWatson] success: Message sent to Watson`);
             resolve({
-                result: "Success: publication forwarded for matching."
-            })
-        }
-    ).catch(err => {
-            console.log('[publish-content-based-3.forwardPublications] error: could NOT forward the topic watson action');
+                result: 'Success. Message Sent to Watson.'
+            });
+        })
+        .catch(function (err) {
+            console.log(`[publish-content-based-4.sendToWatson] error: Message could not be sent to ${params.subscriber_id}`);
             console.log(err);
             reject({
-                result: "Error happened with publications"
-            })
-        }
-    );
+                result: 'Error. Message could not be sent to Watson.'
+            });
+        });
 }
